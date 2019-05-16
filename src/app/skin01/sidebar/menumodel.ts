@@ -23,38 +23,95 @@ export class MenuItem {
 export class MenuModel {
     menuitems;
     constructor() {
-        this.menuitems = [
-            {
-                title: 'Menu1-L0',
-                href: '#',
-                icon: 'fa fa-home',
-                id: 'm0',
-                module: 'user', controller: 'user', action: 'action1',
-                children: [{
-                    title: 'Menu2-L1',
-                    href: '#',
-                    icon: '',
-                    id: 'm1',
-                    module: 'user', controller: 'user', action: 'action2',
-                    children: []
-                }]
+        this.menuitems = [{
+            title: 'Home',
+            href: '#',
+            icon: 'fa fa-home',
+            id: 'm0',
+            module: 'user', controller: 'user', action: 'action1',
+            d: {
+                title: 'Home',
+                subTitle: 'user setting',
+                breadcrumb: ['Home'],
+                component: 'dashboard',
+                docType: 'Demo1'
             },
-            {
-                title: 'Menu3-L0',
+            children: []
+        },
+        {
+
+            title: 'MyDesk',
+            href: '#',
+            icon: 'fa fa-home',
+            id: 'm0',
+            module: 'user', controller: 'user', action: 'action1',
+            d: {
+                title: 'MyDesk',
+                subTitle: 'user setting',
+                breadcrumb: ['MyDesk'],
+                component: 'calendar',
+                docType: ''
+            },
+            children: [{
+                title: 'Profile',
                 href: '#',
                 icon: 'fa fa-desktop',
-                id: 'm2',
-                module: 'user', controller: 'user', action: 'action3',
+                id: 'm1',
+                module: 'user', controller: 'userprofile', action: 'getprofile',
+                d: {
+                    title: 'MyProfile',
+                    subTitle: 'our new sub title',
+                    breadcrumb: ['MyDesk', 'Profile'],
+                    component: 'userprofile',
+                    docType: ''
+                },
                 children: []
-            },
-            {
-                title: 'Menu4-L0',
+            }, {
+                title: 'Messages',
                 href: '#',
-                icon: 'fa fa-desktop', 
+                icon: 'fa fa-desktop',
                 id: 'm3',
                 module: 'user', controller: 'user', action: 'action4',
+                d: {
+                    title: 'Messages',
+                    subTitle: 'our new sub title',
+                    breadcrumb: ['MyDesk', 'Messages'],
+                    component: 'messages',
+                    docType: ''
+                },
                 children: []
+            }]
+        },
+        {
+            title: 'Admin',
+            href: '#',
+            icon: 'fa fa-desktop',
+            id: 'm2',
+            module: 'user', controller: 'user', action: 'action3',
+            d: {
+                title: 'Admin',
+                subTitle: 'our new sub title',
+                breadcrumb: ['Admin'],
+                component: 'chart',
+                docType: 'CumulativeLine',
             },
+            children: [{
+                title: 'Admin Dashboard',
+                href: '#',
+                icon: '',
+                id: 'm1',
+                module: 'moduleman', controller: 'sysset', action: 'getsettings',
+                d: {
+                    title: 'Admin Dashboard',
+                    subTitle: 'our new sub title',
+                    breadcrumb: ['Admin', 'Dashboard'],
+                    component: 'chart',
+                    docType: 'ScatterBubble'
+                },
+                children: []
+            }]
+        }
+
         ];
     }
     setMenuItems(menuitems) {

@@ -34,7 +34,7 @@ export class MenuController {
             });
         });
     }
-
+    
     async process_menu_item(menuItem) {
         console.log('starting process_menu_item(menuItem)');
         const title = menuItem.title;
