@@ -43,7 +43,7 @@
               "src/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js",
               "src/assets/plugins/jquery.appear/jquery.appear.js",
               "src/assets/plugins/jquery-cookie/jquery.cookie.js",
-              "src/assets/plugins/velocity/jquery.velocity.min.js",
+              "src/assets/plugins/velocity/velocity.min.js",
               "src/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js",
               "src/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js",
               

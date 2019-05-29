@@ -27,11 +27,11 @@ export class AppComponent {
       const sidebarWidth = sideLeft.outerWidth(true);
       let activeAnimation = false;
       let hoverSideBar = false;
-      let supportTransition = true;
+      const supportTransition = true;
       let $windowWidth;
       let $windowHeight;
-      let subViews = $('.subviews');
-      const topBar = $(".topbar");
+      const subViews = $('.subviews');
+      const topBar = $('.topbar');
       const mainNavigation = $('.main-navigation');
       const mainContent = $(".main-content");
       const footer = $(".main-wrapper > footer");
@@ -91,8 +91,8 @@ export class AppComponent {
         });
 
         if ($body.hasClass("isMobile") == false && mainNavigation.length) {
-          //mainNavigation.perfectScrollbar('update');
-          //$('.right-wrapper').perfectScrollbar('update');
+          // mainNavigation.perfectScrollbar('update');
+          // $('.right-wrapper').perfectScrollbar('update');
           psMainNavigation.update();
           psRightWrp.update();
         }
@@ -116,7 +116,7 @@ export class AppComponent {
 
 
       // function to adjust the template elements based on the window size
-      var runElementsPosition = function () {
+      const runElementsPosition = function () {
         $windowWidth = viewport().width;
         $windowHeight = viewport().height;
         runContainerHeight();
@@ -187,7 +187,7 @@ export class AppComponent {
                   extendOptions = {
                     complete: function () {
                       closedbar.show().animate({
-                        //translateZ: 0,
+                        // translateZ: 0,
                         left: 0
                       }, 100, function () {
                         activeAnimation = false;
@@ -200,7 +200,7 @@ export class AppComponent {
                   };
                   configAnimation = $.extend({}, extendOptions, globalOptions);
                   $(".main-container, footer .footer-inner, #horizontal-menu .container").animate({
-                    //translateZ: 0,
+                    // translateZ: 0,
                     marginLeft: 0
                   }, configAnimation);
                 }
@@ -251,46 +251,78 @@ export class AppComponent {
           }
           e.preventDefault();
         });
-        $(".sb-toggle-right").on("click", function (e) {
+        $('.sb-toggle-right').on('click', function (e) {
+          e.preventDefault();
+          console.log('.sb-toggle-right is clicked ...001');
+          console.log('activeAnimation>>');
+          console.dir(activeAnimation);
           if (activeAnimation == false) {
+            console.log('.sb-toggle-right is clicked ...002');
+            console.log('activeAnimation is FASLE');
             if ($windowWidth > 991) {
+              console.log('.sb-toggle-right is clicked ...003');
+              console.log('$windowWidth > 991');
               $body.removeClass("sidebar-mobile-open");
             }
             if ($body.hasClass("right-sidebar-open")) {
+              console.log('.sb-toggle-right is clicked ...004');
               if (supportTransition) {
-                extendOptions = {
-                  complete: function () {
-                    inner.attr('style', '').removeClass("inner-transform");
-                    // remove inner-transform (hardware acceleration) for restore z-index
-                    $body.removeClass("right-sidebar-open");
-                    activeAnimation = false;
-                  }
-                };
-                configAnimation = $.extend({}, extendOptions, globalOptions);
-                inner.animate({
-                  translateZ: 0,
-                  translateX: [sidebarWidth, 0]
-                }, configAnimation);
+                console.log('.sb-toggle-right is clicked ...005');
+                inner.attr('style', '').removeClass("inner-transform");
+                // remove inner-transform (hardware acceleration) for restore z-index
+                $body.removeClass("right-sidebar-open");
+                activeAnimation = false;
+                ////////////////////////////////////////////////
+                // ORIGINAL CODES:
+                // ================
+                // extendOptions = {
+                //   complete: function () {
+                //     inner.attr('style', '').removeClass("inner-transform");
+                //     // remove inner-transform (hardware acceleration) for restore z-index
+                //     $body.removeClass("right-sidebar-open");
+                //     activeAnimation = false;
+                //   }
+                // };
+                // configAnimation = $.extend({}, extendOptions, globalOptions);
+                // inner.animate({
+                //   translateZ: 0,
+                //   translateX: [sidebarWidth, 0]
+                // }, configAnimation);
               } else {
+                console.log('.sb-toggle-right is clicked ...006');
                 $body.removeClass("right-sidebar-open");
               }
             } else {
+              console.log('.sb-toggle-right is clicked ...007');
               if (supportTransition) {
+                console.log('.sb-toggle-right is clicked ...008');
+                console.log('inner>>');
+                console.dir(inner);
                 inner.addClass("inner-transform");
+
+                console.log('.sb-toggle-right is clicked ...0081');
                 // add inner-transform for hardware acceleration
-                extendOptions = {
-                  complete: function () {
-                    inner.attr('style', '');
-                    $body.addClass("right-sidebar-open");
-                    activeAnimation = false;
-                  }
-                };
-                configAnimation = $.extend({}, extendOptions, globalOptions);
-                inner.animate({
-                  translateZ: 0,
-                  translateX: [-sidebarWidth, 0]
-                }, configAnimation);
+                inner.attr('style', '');
+                $body.addClass("right-sidebar-open");
+                activeAnimation = false;
+
+                ////////////////////////////////////////////////
+                // ORIGINAL CODES:
+                // ================
+                // extendOptions = {
+                //   complete: function () {
+                //     inner.attr('style', '');
+                //     $body.addClass("right-sidebar-open");
+                //     activeAnimation = false;
+                //   }
+                // };
+                // configAnimation = $.extend({}, extendOptions, globalOptions);
+                // inner.animate({
+                //   translateZ: 0,
+                //   translateX: [-sidebarWidth, 0]
+                // }, configAnimation);
               } else {
+                console.log('.sb-toggle-right is clicked ...009');
                 $body.addClass("right-sidebar-open");
               }
             }

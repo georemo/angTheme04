@@ -1,7 +1,33 @@
-Task: Migrating codes from Main.js:
-Current Errors based on Main.js:
-ERROR in src/app/app.component.ts(777,33): error TS2304: Cannot find name 'moment'.
-src/app/app.component.ts(778,26): error TS2304: Cannot find name 'moment'.
+
+29th May 2019
+Setting up .sb-toggle-right:
+Challenge: $('.sb-toggle-right').click() not responding
+Problem area:
+extendOptions = {
+              complete: function () {
+                inner.attr('style', '').removeClass("inner-transform");
+                // remove inner-transform (hardware acceleration) for restore z-index
+                $body.removeClass("right-sidebar-open");
+                activeAnimation = false;
+              }
+            };
+            configAnimation = $.extend({}, extendOptions, globalOptions);
+            inner.velocity({
+              translateZ: 0,
+              translateX: [sidebarWidth, 0]
+            }, configAnimation);
+
+Note that the actionable codes are:
+inner.attr('style', '').removeClass("inner-transform");
+                // remove inner-transform (hardware acceleration) for restore z-index
+                $body.removeClass("right-sidebar-open");
+                activeAnimation = false;
+
+- the action is challenged by .velocity()...which was substituted by .animate but this
+did not aleviate the problem.
+- for the codes to work, it was exposed directly without any animation codes.
+
+////////////////////////
 
 Sidebar mouse actions was not working as expected:
 Strategy:
@@ -19,8 +45,6 @@ replace $(...).velocity() with $(...).animate()
 'ease' animation error
 The issue was not resolved by all 'ease' were removed
 
-
-
 Error: jQuery.Deferred exception: mainNavigation.perfectScrollbar is not a function
 solution: $ npm install perfect-scrollbar:
     const psMainNavigation = new PerfectScrollbar('.main-navigation');
@@ -31,12 +55,18 @@ solution: $ npm install perfect-scrollbar:
     psMainNavigation.update();
     psRightWrp.update();
 
+//////////////////////////////////////////////////
 viewport() function error: has unresolved line:
     e = document.documentElement || document.body;
+
+Error: $(...).data(...) is undefined
+// read note
+    var readNote = function(el) {
 
 
 
 ToDo:
+- resolve: $('.sb-toggle-right').click() not responding
 - invistigate how to have 'moment' to work in angular
 - 
 
