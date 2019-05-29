@@ -8,9 +8,11 @@
 @import "assets/plugins/perfect-scrollbar/src/perfect-scrollbar.css";
 @import "assets/plugins/animate.css/animate.min.css";
 
+
 @import "assets/plugins/owl-carousel/owl-carousel/owl.carousel.css";
 @import "assets/plugins/owl-carousel/owl-carousel/owl.theme.css";
 @import "assets/plugins/owl-carousel/owl-carousel/owl.transitions.css";
+
 @import "assets/plugins/summernote/dist/summernote.css";
 @import "assets/plugins/fullcalendar/fullcalendar/fullcalendar.css";
 @import "assets/plugins/toastr/toastr.min.css";

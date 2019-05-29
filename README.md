@@ -1,10 +1,18 @@
 # AngTheme03
+Using existing html based admin theme to set up angular based admin theme.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## ToDo:
+- Activate topbar dropdowns
+
+## Changed:
+17th May 2019:<br>
+- created 'structure' folder under 'skin01' to house all structural components (including maincontainer, sidebar, footer, topbar etc )<br>
 
 ## Code scaffolding
 

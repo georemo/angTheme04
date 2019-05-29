@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
-import { DesktopComponent } from '../views/desktop/desktop.component';
+import { DesktopComponent } from '../../views/desktop/desktop.component';
 
 @Component({
   selector: 'app-maincontainer',
@@ -28,7 +27,7 @@ export class MaincontainerComponent implements OnInit {
         subTitle: 'user setting',
         breadcrumb: ['Home'],
         component: 'dashboard',
-        docType: 'Demo1'
+        docType: 'Multiple1'
       },
       children: []
     };

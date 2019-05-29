@@ -1,0 +1,78 @@
+Task: Migrating codes from Main.js:
+Current Errors based on Main.js:
+ERROR in src/app/app.component.ts(777,33): error TS2304: Cannot find name 'moment'.
+src/app/app.component.ts(778,26): error TS2304: Cannot find name 'moment'.
+
+Sidebar mouse actions was not working as expected:
+Strategy:
+1. Moved the following functions to app.component.ts from main.js:
+    runContainerHeight();
+    runElementsPosition();
+    runToggleSideBars();
+    runClosedBarButton();
+
+Issues from above:
+$(...).velocity() is not a function error
+solution:
+replace $(...).velocity() with $(...).animate()
+
+'ease' animation error
+The issue was not resolved by all 'ease' were removed
+
+
+
+Error: jQuery.Deferred exception: mainNavigation.perfectScrollbar is not a function
+solution: $ npm install perfect-scrollbar:
+    const psMainNavigation = new PerfectScrollbar('.main-navigation');
+    const psRightWrp = new PerfectScrollbar('.right-wrapper');
+
+    //mainNavigation.perfectScrollbar('update');
+    //$('.right-wrapper').perfectScrollbar('update');
+    psMainNavigation.update();
+    psRightWrp.update();
+
+viewport() function error: has unresolved line:
+    e = document.documentElement || document.body;
+
+
+
+ToDo:
+- invistigate how to have 'moment' to work in angular
+- 
+
+Structuring Veiw Modes:
+
+Objects
+closedbar
+sideLeft
+menu
+
+////////////////////////////////////////
+To structure layout codes
+modes:
+1. wideView    
+    closedbar.onMouseover(){
+        menu.show()
+    }
+    closedbar.onMouseleave(){
+        menu.hide()
+    }
+2. defaultView    
+    closedbar.onMouseclick(){
+        accessHiddenMenu()
+    }
+    closedbar.onMouseleave(){
+        hideMenu()
+    }
+////////////////////////////////////////   
+menu:    
+    hide(){
+    }
+    show(){
+    }
+sideLeft:    
+    wide(){
+    }
+    default(){
+    }
+

@@ -27,9 +27,11 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/plugins/jQuery/jquery-2.1.1.min.js",
+              "node_modules/jquery-ui-dist/jquery-ui.js",
+              "node_modules/jquery-ui/ui/effect.js",
               "src/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/plugins/bootstrap/js/bootstrap.min.js",
               "src/assets/plugins/blockUI/jquery.blockUI.js",
               "src/assets/plugins/iCheck/jquery.icheck.min.js",
@@ -44,6 +46,9 @@
               "src/assets/plugins/velocity/jquery.velocity.min.js",
               "src/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js",
               "src/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js",
+              
+              "./node_modules/owl.carousel/dist/owl.carousel.min.js",
+
               "src/assets/plugins/jquery-mockjax/jquery.mockjax.js",
               "src/assets/plugins/toastr/toastr.js",
               "src/assets/plugins/bootstrap-modal/js/bootstrap-modal.js",
@@ -76,12 +81,10 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -91,13 +94,11 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
+              "budgets": [{
+                "type": "initial",
+                "maximumWarning": "2mb",
+                "maximumError": "5mb"
+              }]
             }
           }
         },

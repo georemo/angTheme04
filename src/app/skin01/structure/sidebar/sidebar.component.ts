@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { MenuController } from './menucontroller';
-import { DesktopComponent } from '../views/desktop/desktop.component';
+import { DesktopComponent } from '../../views/desktop/desktop.component';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,17 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { TopbarComponent } from './skin01/topbar/topbar.component';
-import { SidebarComponent } from './skin01/sidebar/sidebar.component';
-import { PagesliderightComponent } from './skin01/pageslideright/pageslideright.component';
-import { PageslideleftComponent } from './skin01/pageslideleft/pageslideleft.component';
-import { MaincontainerComponent } from './skin01/maincontainer/maincontainer.component';
-import { SlidingbarComponent } from './skin01/slidingbar/slidingbar.component';
-import { FooterComponent } from './skin01/footer/footer.component';
-import { SubviewsComponent } from './skin01/subviews/subviews.component';
+import { TopbarComponent } from './skin01/structure/topbar/topbar.component';
+import { SidebarComponent } from './skin01/structure/sidebar/sidebar.component';
+import { PagesliderightComponent } from './skin01/structure/pageslideright/pageslideright.component';
+import { PageslideleftComponent } from './skin01/structure/pageslideleft/pageslideleft.component';
+import { MaincontainerComponent } from './skin01/structure/maincontainer/maincontainer.component';
+import { SlidingbarComponent } from './skin01/structure/slidingbar/slidingbar.component';
+import { FooterComponent } from './skin01/structure/footer/footer.component';
+import { SubviewsComponent } from './skin01/structure/subviews/subviews.component';
 import { DesktopComponent } from './skin01/views/desktop/desktop.component';
 import { SocialComponent } from './skin01/views/social/social.component';
 import { BlogComponent } from './skin01/views/blog/blog.component';

@@ -1,3 +1,6 @@
+'use strict'
+//window.$ = window.jQuery = $;
+
 var isIE8 = false,
   isIE9 = false,
   inner = $(".main-wrapper > .inner"),
@@ -16,15 +19,71 @@ var isIE8 = false,
   mainContent = $(".main-content"),
   footer = $(".main-wrapper > footer");
 var thisSlider, actualItemWidth, newItemWidth, activeAnimation = false,
-  hoverSideBar = false;;
+  hoverSideBar = false;
+////////////////////////////////////////////////////
+$.fn.resized = function (callback, timeout) {
+  $(this).resize(function () {
+    let $this = $(this);
+    if ($this.data('resizeTimeout')) {
+      clearTimeout($this.data('resizeTimeout'));
+    }
+    $this.data('resizeTimeout', setTimeout(callback, timeout));
+  });
+};
+
+$.fn.extend({
+  resized2: (callback, timeout) => {
+    return $(this).resize(function () {
+      let $this = $(this);
+      if ($this.data('resizeTimeout')) {
+        clearTimeout($this.data('resizeTimeout'));
+      }
+      $this.data('resizeTimeout', setTimeout(callback, timeout));
+    });
+  }
+});
+////////////////////////////////////////////////////
 
 // Debounce Function
+// (function ($, sr) {
+//   "use strict";
+//   // debouncing function from John Hann
+//   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+//   var debounce = function (func, threshold, execAsap) {
+//     var timeout;
+//     return function debounced() {
+//       var obj = this,
+//         args = arguments;
+
+//       function delayed() {
+//         if (!execAsap)
+//           func.apply(obj, args);
+//         timeout = null;
+//       };
+
+//       if (timeout)
+//         clearTimeout(timeout);
+//       else if (execAsap)
+//         func.apply(obj, args);
+
+//       timeout = setTimeout(delayed, threshold || 100);
+//     };
+//   };
+//   // smartresize
+//   jQuery.fn[sr] = function (fn) {
+//     return fn ? this.on('resize', debounce(fn)) : this.trigger(sr);
+//   };
+
+// })(jQuery, 'espressoResize');
+
+const smartresize = new Function();
 (function ($, sr) {
-  "use strict";
+
   // debouncing function from John Hann
   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
   var debounce = function (func, threshold, execAsap) {
     var timeout;
+
     return function debounced() {
       var obj = this,
         args = arguments;
@@ -42,13 +101,14 @@ var thisSlider, actualItemWidth, newItemWidth, activeAnimation = false,
 
       timeout = setTimeout(delayed, threshold || 100);
     };
-  };
-  // smartresize
+  }
+  // smartresize 
   jQuery.fn[sr] = function (fn) {
-    return fn ? this.on('resize', debounce(fn)) : this.trigger(sr);
+    return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr);
   };
 
-})(jQuery, 'espressoResize');
+})(jQuery, 'smartresize');
+
 
 //Main Function
 var Main = function () {
@@ -57,6 +117,7 @@ var Main = function () {
   var runInit = function () {
     // Detection for IE Version
     if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+      console.log('Browser:IE');
       var ieversion = new Number(RegExp.$1);
       if (ieversion == 8) {
         isIE8 = true;
@@ -68,6 +129,7 @@ var Main = function () {
     }
     // Detection for Mobile Device
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      console.log('Browser:Mobile');
       isMobile = true;
       $body.addClass('isMobile');
     };
@@ -87,7 +149,6 @@ var Main = function () {
         minScrollbarLength: 20,
         suppressScrollX: true
       });
-
     }
     // clones the horizontal menu and inserts it into left sidebar for mobile devices
     if ($("#horizontal-menu").length) {
@@ -98,7 +159,6 @@ var Main = function () {
       } else {
         $("#horizontal-menu").find(".nav").clone().removeClass("nav navbar-nav").addClass("main-navigation-menu core-menu").find("li.dropdown").removeClass("dropdown").find("a").removeClass("dropdown-toggle").removeAttr("data-toggle").end().end().find("ul.dropdown-menu").removeClass("dropdown-menu").addClass("sub-menu").end().addClass("hidden-md hidden-lg").prependTo(".main-navigation");
       }
-
     }
 
     // set blockUI options
@@ -136,6 +196,8 @@ var Main = function () {
         });
       }
     }
+
+
 
   };
   //function to get viewport/window size (width and height)
@@ -294,17 +356,17 @@ var Main = function () {
 		 }
 		 */
     if ($('.tooltip-notification').length) {
-      setTimeout(function () {
-        $('.tooltip-notification').removeClass('hide');
-        $('.tooltip-notification').addClass('animated fadeIn');
-      }, 5000);
-      setTimeout(function () {
-        $('.tooltip-notification').velocity({
-          opacity: 0
-        }, 300, 'ease', function () {
-          $(this).removeClass('animated bounceIn').addClass('hide');
-        });
-      }, 8000);
+      // setTimeout(function () {
+      //   $('.tooltip-notification').removeClass('hide');
+      //   $('.tooltip-notification').addClass('animated fadeIn');
+      // }, 5000);
+      // setTimeout(function () {
+      //   $('.tooltip-notification').velocity({
+      //     opacity: 0
+      //   }, 300, 'ease', function () {
+      //     $(this).removeClass('animated bounceIn').addClass('hide');
+      //   });
+      // }, 8000);
     }
 
     if ($('.notifications-count').length) {
@@ -648,6 +710,8 @@ var Main = function () {
         }
       };
       configAnimation = $.extend({}, extendOptions, globalOptions);
+      console.log('configAnimation>>');
+      console.dir(configAnimation);
 
       inner.velocity({
         translateZ: 0,
@@ -695,7 +759,7 @@ var Main = function () {
       var config = $.extend({}, defaults, options, slider.data("plugin-options"));
 
       // Initialize Slider
-      slider.owlCarousel(config);
+      //slider.owlCarousel(config);
     });
   };
 
@@ -714,6 +778,8 @@ var Main = function () {
   };
   //function to Right and Left PageSlide
   var runToggleSideBars = function () {
+    var closedbar = document.querySelector('.closedbar');
+    var body = document.querySelector('body');
     var configAnimation, extendOptions, globalOptions = {
       duration: 150,
       easing: "ease",
@@ -728,20 +794,32 @@ var Main = function () {
       hoverSideBar = false;
     });
     $(".sb-toggle-left, .closedbar").on("click", function (e) {
+      console.log('.sb-toggle-left clicked 000');
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+      console.log('configAnimation>>');
+      console.dir(configAnimation);
       if (activeAnimation == false) {
+        console.log('activeAnimation==false');
         if ($windowWidth > 991) {
+          console.log('$windowWidth > 991');
+          var className = $body.attr('class');
+          console.log(`class:${className}`);
           $body.removeClass("sidebar-mobile-open");
           if ($body.hasClass("sidebar-close")) {
+            console.log('$body.hasClass("sidebar-close")...2');
             if ($body.hasClass("layout-boxed") || $body.hasClass("isMobile")) {
               $body.removeClass("sidebar-close");
-              closedbar.removeClass("open");
+              closedbar.classList.remove("open"); //vanilla js. jq version substituted
               $(window).trigger('resize');
             } else {
-              closedbar.removeClass("open").hide();
-              closedbar.css({
-                //translateZ: 0,
-                left: -closedbar.width()
-              });
+              closedbar.classList.remove("open"); //vanilla js. jq version substituted
+              closedbar.style.visibility = 'hidden';
+              closedbar.style.left = -closedbar.style.width;
+              // closedbar.css({
+              //   //translateZ: 0,
+              //   left: -closedbar.width()
+              // });
 
               extendOptions = {
                 complete: function () {
@@ -752,48 +830,67 @@ var Main = function () {
                 }
               };
               configAnimation = $.extend({}, extendOptions, globalOptions);
-              $(".main-container, footer .footer-inner, #horizontal-menu .container").velocity({
+              console.log('configAnimation>>');
+              console.dir(configAnimation);
+              $(".main-container, footer .footer-inner, #horizontal-menu .container").animate({
                 //translateZ: 0,
                 marginLeft: sidebarWidth
               }, configAnimation);
-
             }
 
           } else {
+            console.log('.sb-toggle-left clicked...02');
             if ($body.hasClass("layout-boxed") || $body.hasClass("isMobile")) {
               $body.addClass("sidebar-close");
               closedbar.addClass("open");
               $(window).trigger('resize');
             } else {
+              console.log('.sb-toggle-left clicked...03');
               sideLeft.css({
                 zIndex: 0
-
               });
-              extendOptions = {
-                complete: function () {
-                  closedbar.show().velocity({
-                    //translateZ: 0,
-                    left: 0
-                  }, 100, 'ease', function () {
-                    activeAnimation = false;
-                    closedbar.addClass("open");
-                    $body.addClass("sidebar-close");
-                    $(".main-container, footer .footer-inner, #horizontal-menu .container, .closedbar").attr('style', '');
-                    $(window).trigger('resize');
-                  });
-                }
-              };
+
+              // extendOptions = {
+              //   complete: function () {
+
+              //     closedbar.show()({
+              //       //translateZ: 0,
+              //       left: 0
+              //     }, 100, 'ease', function () {
+              //       activeAnimation = false;
+              //       closedbar.addClass("open");
+              //       $body.addClass("sidebar-close");
+              //       $(".main-container, footer .footer-inner, #horizontal-menu .container, .closedbar").attr('style', '');
+              //       $(window).trigger('resize');
+              //     });
+              //   }
+              // };
               configAnimation = $.extend({}, extendOptions, globalOptions);
+              console.log('configAnimation>>');
+              console.dir(configAnimation);
               $(".main-container, footer .footer-inner, #horizontal-menu .container").velocity({
-                //translateZ: 0,
-                marginLeft: 0
-              }, configAnimation);
+                  //translateZ: 0,
+                  marginLeft: 0
+                },
+                configAnimation);
+              ///////////////////////////////////////////////////////////
+              closedbar.style.display = 'block';
+              activeAnimation = false;
+              closedbar.style.left = 0;
+              closedbar.classList.add('open');
+              body.classList.add('sidebar-close');
+
+              console.log('.sb-toggle-left clicked...04');
+              ///////////////////////////////////////////////////////////
             }
           }
 
         } else {
+          console.log('.sb-toggle-left clicked...switch 2::001');
           if ($body.hasClass("sidebar-mobile-open")) {
+            console.log('$body.hasClass("sidebar-mobile-open")');
             if (supportTransition) {
+              console.log('.sb-toggle-left clicked...switch 2::002');
               extendOptions = {
                 complete: function () {
                   inner.attr('style', '').removeClass("inner-transform");
@@ -802,17 +899,26 @@ var Main = function () {
                   activeAnimation = false;
                 }
               };
+              console.log('activeAnimation>>');
+              console.dir(activeAnimation);
+              console.log('.sb-toggle-left clicked...switch 2::003');
               configAnimation = $.extend({}, extendOptions, globalOptions);
+              console.log('configAnimation>>');
+              console.dir(configAnimation);
 
               inner.velocity({
                 translateZ: 0,
                 translateX: [-sidebarWidth, 0]
               }, configAnimation);
+              console.log('.sb-toggle-left clicked...switch 2::004');
             } else {
+              console.log('.sb-toggle-left clicked...switch 2::005');
               $body.removeClass("sidebar-mobile-open");
             }
           } else {
+            console.log('.sb-toggle-left clicked...switch 2::006');
             if (supportTransition) {
+              console.log('.sb-toggle-left clicked...switch 2::007');
               inner.addClass("inner-transform");
               // add inner-transform for hardware acceleration
               extendOptions = {
@@ -822,18 +928,26 @@ var Main = function () {
                   activeAnimation = false;
                 }
               };
+              console.log('.sb-toggle-left clicked...switch 2::008');
               configAnimation = $.extend({}, extendOptions, globalOptions);
+              console.log('configAnimation>>');
+              console.dir(configAnimation);
               inner.velocity({
                 translateZ: 0,
                 translateX: [sidebarWidth, 0]
               }, configAnimation);
+              console.log('.sb-toggle-left clicked...switch 2::009');
             } else {
+              console.log('.sb-toggle-left clicked...switch 2::010');
               $body.addClass("sidebar-mobile-open");
             }
-
+            console.log('.sb-toggle-left clicked...switch 2::011');
           }
         }
       }
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+      console.log('.sb-toggle-left clicked end');
       e.preventDefault();
     });
     $(".sb-toggle-right").on("click", function (e) {
@@ -871,59 +985,146 @@ var Main = function () {
               }
             };
             configAnimation = $.extend({}, extendOptions, globalOptions);
+            console.log('configAnimation>>');
+            console.dir(configAnimation);
             inner.velocity({
               translateZ: 0,
               translateX: [-sidebarWidth, 0]
             }, configAnimation);
           } else {
+            console.log('configAnimation>>');
+            console.dir(configAnimation);
             $body.addClass("right-sidebar-open");
           }
         }
       }
+      console.log('configAnimation>>');
+      console.dir(configAnimation);
       e.preventDefault();
     });
   };
   // function to activate ClosedBar Button
-  var runClosedBarButton = function () {
+  const runClosedBarButton = function () {
+    console.log('starting runClosedBarButton()');
+
+    /////////////////////////////////////
+    // var body = document.querySelector('body');
+    var closedbar = document.querySelector('.closedbar');
+    var sideLeft = document.querySelector('#pageslide-left');
+    // var sideRight = document.querySelector('#pageslide-right');
     var t;
-    closedbar.mouseover(function () {
-      if ($body.hasClass("layout-boxed") == false && $body.hasClass("isMobile") == false && closedbar.hasClass("open")) {
+    closedbar.addEventListener("mouseover", function (event) {
+      console.log('_closedbar.mouseover triggered');
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+      if ($body.hasClass("layout-boxed") == false && $body.hasClass("isMobile") == false && closedbar.classList.contains('open')) {
+        console.log('closedbar:mouseover:desktop action...');
         t = setTimeout(function () {
-          closedbar.velocity({
-            left: -closedbar.width()
-          }, 100, 'ease');
-          sideLeft.css({
-            left: -sidebarWidth,
-            zIndex: 1021
-          }).velocity({
-            left: 0
-
-          }, 200, 'ease');
+          closedbar.style.left = -closedbar.style.width;
+          sideLeft.style.left = -sidebarWidth;
+          sideLeft.style.zIndex = 1021;
+          sideLeft.style.left = 0;
+          /////
+          closedbar.classList.remove("open"); //vanilla js. jq version substituted
+          closedbar.style.visibility = 'hidden';
+          closedbar.style.left = -closedbar.style.width;
+          //////
         }, 800);
+
+        //////////////////////////////////////
+        // t = setTimeout(function () {
+        //   closedbar.animate({
+        //     left: -closedbar.width()
+        //   }, 100);
+        //   sideLeft.css({
+        //     left: -sidebarWidth,
+        //     zIndex: 1021
+        //   }).animate({
+        //     left: 0
+
+        //   }, 200);
+        // }, 800);
+        //////////////////////////////////////////
       }
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+    }, false);
 
-    }).mouseleave(function () {
-
+    closedbar.addEventListener('mouseleave', (function () {
+      console.log('_closedbar.mouseleave triggered');
       if ($body.hasClass("layout-boxed") == false && $body.hasClass("isMobile") == false) {
+        console.log('closedbar:mouseleave:desktop action...');
         clearTimeout(t);
       }
-    });
-    sideLeft.mouseleave(function () {
-      if ($body.hasClass("sidebar-close") && closedbar.hasClass("open") && $body.hasClass("isMobile") == false) {
-        sideLeft.velocity({
-          left: -sidebarWidth
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+    }));
 
-        }, 200, 'ease', function () {
-          closedbar.velocity({
-            left: 0
-          }, 200, 'ease');
-          sideLeft.css({
-            left: 0,
-            zIndex: 0
-          });
-        });
+    sideLeft.addEventListener('mouseleave', (function () {
+      console.log('sideLeft.mouseleave triggered');
+      console.log('activeAnimation>>');
+      console.dir(activeAnimation);
+      if ($body.hasClass("sidebar-close") && closedbar.classList.contains('open') && $body.hasClass("isMobile") == false) {
+        console.log('sideLeft:mouseleave:desktop action...');
+        sideLeft.style.left = -sidebarWidth;
+        closedbar.style.left = 0;
+        sideLeft.style.left = 0;
+        sideLeft.zIndex = 0;
+        console.log('activeAnimation>>');
+        console.dir(activeAnimation);
       }
-    });
+    }));
+
+    /////////////////////////////////////
+
+    // closedbar.mouseover(() => {
+    //   console.log('closedbar.mouseover triggered ...001');
+    //   console.log('activeAnimation>>');
+    //   console.dir(activeAnimation);
+    //   if ($body.hasClass("layout-boxed") == false && $body.hasClass("isMobile") == false && closedbar.hasClass("open")) {
+    //     t = setTimeout(function () {
+    //       closedbar.velocity({
+    //         left: -closedbar.width()
+    //       }, 100, 'ease');
+    //       sideLeft.css({
+    //         left: -sidebarWidth,
+    //         zIndex: 1021
+    //       }).velocity({
+    //         left: 0
+
+    //       }, 200, 'ease');
+    //     }, 800);
+    //   }
+    //   console.log('activeAnimation>>');
+    //   console.dir(activeAnimation);
+
+    // }).mouseleave(function () {
+    //   console.log('closedbar.mouseleave triggered');
+    //   if ($body.hasClass("layout-boxed") == false && $body.hasClass("isMobile") == false) {
+    //     clearTimeout(t);
+    //   }
+    // });
+    // sideLeft.mouseleave(function () {
+    //   console.log('sideLeft.mouseleave triggered');
+    //   console.log('activeAnimation>>');
+    //   console.dir(activeAnimation);
+    //   if ($body.hasClass("sidebar-close") && closedbar.hasClass("open") && $body.hasClass("isMobile") == false) {
+    //     sideLeft.velocity({
+    //       left: -sidebarWidth
+
+    //     }, 200, 'ease', function () {
+    //       closedbar.velocity({
+    //         left: 0
+    //       }, 200, 'ease');
+    //       sideLeft.css({
+    //         left: 0,
+    //         zIndex: 0
+    //       });
+    //     });
+    //     console.log('activeAnimation>>');
+    //     console.dir(activeAnimation);
+    //   }
+    // });
   };
   // function to activate the Go-Top button
   var runGoTop = function (e) {
@@ -1193,14 +1394,34 @@ var Main = function () {
   };
 
   // Window Resize Function
-  var runWIndowResize = function (func, threshold, execAsap) {
-    //wait until the user is done resizing the window, then execute
-    $(window).espressoResize(function () {
-      runElementsPosition();
-      setPortfolioPanel();
-      runRefreshSliders();
-    });
+  ////////////////////////////////////////////////////
+  const HndlResizeEnd = () => {
+    runElementsPosition();
+    setPortfolioPanel();
+    runRefreshSliders();
+  }
+
+  /////////////////////////////////////////////////////
+  let runWIndowResize = (func, threshold, execAsap) => {
+    // wait until the user is done resizing the window, then execute
+    //$(window).resized2(HndlResizeEnd, 300);
+    // $(window).espressoResize(() => {
+    //   runElementsPosition();
+    //   setPortfolioPanel();
+    //   runRefreshSliders();
+    // });
   };
+  ////////////////////////////////////////////////////////
+
+
+  // var runWIndowResize = function (func, threshold, execAsap) {
+  //   //wait until the user is done resizing the window, then execute
+  //   $(window).smartresize(function () {
+  //     runElementsPosition();
+  //     setPortfolioPanel();
+  //     runRefreshSliders();
+  //   });
+  // };
   //function to select all checkboxes in a Table
   var runCheckAll = function () {
     $('input[type="checkbox"].selectall').on('ifChecked', function (event) {
@@ -1422,41 +1643,73 @@ var Main = function () {
   return {
     //main function to initiate template pages
     init: function () {
+      console.log('Main::init 001');
       runWIndowResize();
+      console.log('Main::init 002');
       runInit();
+      console.log('Main::init 003');
       runQuickChat();
-      runToggleSideBars();
+      console.log('Main::init 004');
+      // runToggleSideBars();
+      console.log('Main::init 005');
       runStyleSelector();
+      console.log('Main::init 006');
       runElementsPosition();
+      console.log('Main::init 007');
       runToDoAction();
+      console.log('Main::init 008');
       runNavigationMenu();
+      console.log('Main::init 009');
       runGoTop();
+      console.log('Main::init 010');
       setSearchMenu();
+      console.log('Main::init 011');
       runModuleTools();
+      console.log('Main::init 012');
       runDropdownEnduring();
+      console.log('Main::init 013');
       runTooltips();
+      console.log('Main::init 014');
       runESlider();
+      console.log('Main::init 015');
       runPopovers();
+      console.log('Main::init 016');
       runPanelScroll();
+      console.log('Main::init 017');
       runAnimatedElements();
+      console.log('Main::init 018');
       runShowTab();
+      console.log('Main::init 019');
       runCustomCheck();
+      console.log('Main::init 020');
       runColorPalette();
+      console.log('Main::init 021');
       runSaveSetting();
+      console.log('Main::init 022');
       runCustomSetting();
+      console.log('Main::init 023');
       runStatusButton();
+      console.log('Main::init 024');
       runCheckAll();
+      console.log('Main::init 025');
       runClearSetting();
-      runClosedBarButton();
+      console.log('Main::init 026');
+      // runClosedBarButton();
+      console.log('Main::init 028');
       runAnimateProgressbar();
+      console.log('Main::init 029');
       runSelecticker();
+      console.log('Main::init 030');
       setPortfolioPanel();
+      console.log('Main::init 032');
       runSideBarToggle();
+      console.log('Main::init 033');
       runMsViewport();
+      console.log('Main::init 034');
       runTimeStamp();
+      console.log('Main::init 035');
       documentEvents();
+      console.log('Main::init 036');
     }
   };
 }();
-
-
