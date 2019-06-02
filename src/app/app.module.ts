@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +44,7 @@ import { UiTreeComponent } from './skin01/views/sdk/ui-tree/ui-tree.component';
 import { UiNestableListComponent } from './skin01/views/sdk/ui-nestable-list/ui-nestable-list.component';
 import { UiTypographyComponent } from './skin01/views/sdk/ui-typography/ui-typography.component';
 import { Dashboard1Component } from './skin01/views/dashboard1/dashboard1.component';
+import { LoginComponent } from './skin01/views/login/login.component';
 
 
 @NgModule({
@@ -85,11 +87,13 @@ import { Dashboard1Component } from './skin01/views/dashboard1/dashboard1.compon
     UiTreeComponent,
     UiNestableListComponent,
     UiTypographyComponent,
-    Dashboard1Component
+    Dashboard1Component,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

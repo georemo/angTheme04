@@ -30,6 +30,8 @@ interface JQuery<TElement> {
     owlCarousel: any;
     resized: any;
     resized2: any;
+    validate: any;
+    name: any;
 }
 
 
@@ -38,6 +40,7 @@ interface JQueryStatic {
     blockUI: any;
     cookie: any;
     removeCookie: any;
+    validator: any;
 }
 
 declare var module: NodeModule;

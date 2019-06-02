@@ -73,6 +73,8 @@
               "src/assets/plugins/nvd3/src/models/stackedAreaChart.js",
               "src/assets/plugins/jquery.sparkline/jquery.sparkline.js",
               "src/assets/plugins/easy-pie-chart/dist/jquery.easypiechart.min.js",
+              "src/assets/plugins/jquery.transit/jquery.transit.js",
+              "src/assets/plugins/jquery-validation/dist/jquery.validate.min.js",
               "src/assets/js/index.js",
               "src/assets/js/main.js",
               "src/assets/js/init.js"

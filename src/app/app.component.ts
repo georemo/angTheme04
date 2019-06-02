@@ -1,5 +1,6 @@
 import * as $ from 'jquery';
 import { Component } from '@angular/core';
+import { AppStateService } from './services/app-state.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 // declare var $: any;
 import * as moment from 'moment';
@@ -12,8 +13,9 @@ import * as moment from 'moment';
 export class AppComponent {
   title = 'angTheme04';
 
-  constructor() {
-
+  constructor(
+    private appState: AppStateService /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    ) {
   }
   public ngOnInit() {
 
@@ -52,8 +54,6 @@ export class AppComponent {
           height: e[a + 'Height']
         };
       };
-
-
 
       // function to adapt the Main Content height to the Main Navigation height
       const runContainerHeight = function () {
@@ -126,10 +126,12 @@ export class AppComponent {
 
       // function to Right and Left PageSlide
       const runToggleSideBars = function () {
-        var configAnimation, extendOptions, globalOptions = {
+        let configAnimation; 
+        let extendOptions; 
+        let globalOptions = {
           duration: 150,
           mobileHA: true,
-          progress: function () {
+          progress: () => {
             activeAnimation = true;
           }
         };
@@ -374,6 +376,8 @@ export class AppComponent {
           }
         });
       };// end runClosedBarButton()
+
+      
 
       runContainerHeight();
       runElementsPosition();

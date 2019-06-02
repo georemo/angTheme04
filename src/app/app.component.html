@@ -1,23 +1,37 @@
-<!-- start: SLIDING BAR (SB) -->
-<app-slidingbar></app-slidingbar>
-<!-- end: SLIDING BAR -->
-<div class="main-wrapper">
-  <!-- start: TOPBAR -->
-  <app-topbar></app-topbar>
-  <!-- end: TOPBAR -->
-  <!-- start: PAGESLIDE LEFT -->
-  <app-pageslideleft></app-pageslideleft>
-  <!-- end: PAGESLIDE LEFT -->
-  <!-- start: PAGESLIDE RIGHT -->
-  <app-pageslideright></app-pageslideright>
-  <!-- end: PAGESLIDE RIGHT -->
-  <!-- start: MAIN CONTAINER -->
-  <app-maincontainer></app-maincontainer>
-  <!-- end: MAIN CONTAINER -->
-  <!-- start: FOOTER -->
-  <app-footer></app-footer>
-  <!-- end: FOOTER -->
-  <!-- start: SUBVIEW SAMPLE CONTENTS -->
-  <app-subviews></app-subviews>
-  <!-- end: SUBVIEW SAMPLE CONTENTS -->
+<div [ngSwitch]="appState.getState().mode">
+  <div *ngSwitchCase="'anon'">
+    <!-- start: SLIDING BAR (SB) -->
+    <app-slidingbar></app-slidingbar>
+    <!-- end: SLIDING BAR -->
+    <div class="main-wrapper">
+      <!-- start: TOPBAR -->
+      <app-topbar></app-topbar>
+      <!-- end: TOPBAR -->
+      <!-- start: PAGESLIDE LEFT -->
+      <app-pageslideleft></app-pageslideleft>
+      <!-- end: PAGESLIDE LEFT -->
+      <!-- start: PAGESLIDE RIGHT -->
+      <app-pageslideright></app-pageslideright>
+      <!-- end: PAGESLIDE RIGHT -->
+      <!-- start: MAIN CONTAINER -->
+      <app-maincontainer></app-maincontainer>
+      <!-- end: MAIN CONTAINER -->
+      <!-- start: FOOTER -->
+      <app-footer></app-footer>
+      <!-- end: FOOTER -->
+      <!-- start: SUBVIEW SAMPLE CONTENTS -->
+      <app-subviews></app-subviews>
+      <!-- end: SUBVIEW SAMPLE CONTENTS -->
+    </div>
+  </div>
+  <div *ngSwitchCase="'login'">
+      <!-- start: SLIDING BAR (SB) -->
+      <app-slidingbar></app-slidingbar>
+      <!-- end: SLIDING BAR -->
+      <div class="main-wrapper">
+        <!-- start: LOGIN -->
+        <app-login></app-login>
+        <!-- end: LOGIN -->
+      </div>
+    </div>
 </div>

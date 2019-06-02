@@ -1,4 +1,101 @@
+2nd June 2019:
+login front end:
+new includes based on rapido template:
+    "assets/plugins/jquery.transit/jquery.transit.js"
+    <!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
+	"assets/plugins/jquery-validation/dist/jquery.validate.min.js"
+	"assets/js/login.js"
 
+create componet @ /src/app/skin01/views/login
+create service @  /src/app/services/server.service.ts
+    - this will be the ajax interface for commuicating with backend
+
+CORS issue:
+
+
+solution:
+==========
+angular:
+angular proxy: https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/proxy.md
+laravel:
+https://github.com/barryvdh/laravel-cors
+
+Request format:
+{
+	"ctx":"Sys",
+	"m":"User",
+	"c":"UserController",
+	"a":"Login",
+	"dat":{"username":"karl","password":"secret"},
+	"args":null
+}
+
+Response format:
+{
+    "app_state": {
+        "success": 1,
+        "error": {
+            "message": "welcome",
+            "error_code": 1
+        },
+        "sess": {
+            "cd_token": "pBLDUbatc79U6fCz0BfDNmwmgPlCkJsqgvKtAKcp",
+            "jwt": null,
+            "p_sid": "r7sLsFetpvUcA0UkfjOr8HcIxVRyBdfVIXCHWvcK",
+            "ttl": "120"
+        },
+        "cache": {
+            "dat_scope": null
+        }
+    },
+    "data": [
+        {
+            "user_id": 1010,
+            "user_guid": "fe5b1a9d-df45-4fce-a181-65289c48ea00",
+            "username": "karl",
+            "email": "karl.lulu@anon.com",
+            "co_id": 85,
+            "doc_id": 34,
+            "mobile": "895909",
+            "gender": 1,
+            "dateobirth": "1976-03-10 09:53:37",
+            "postal_addr": "85849",
+            "fname": "Karl",
+            "mname": "D",
+            "lname": "Lulu",
+            "national_id": "85909",
+            "passport_id": "89599",
+            "Trusted": 1,
+            "ZipCode": null,
+            "ActivationKey": "8968959",
+            "ProfessionID": 4,
+            "avatar": "cd_guig/widget_closet/themes/inspinia_v23/img/a7.jpg",
+            "theme_id": null,
+            "signature_id": null,
+            "timezone_id": null,
+            "lang_id": null,
+            "designation_id": 100015,
+            "company_id": 85,
+            "user_type_id": 1
+        }
+    ]
+}
+
+
+
+
+ToDo:
+=====
+- capture response @ LoginComponent ( we are already receiving response @ server.service )
+Error Handling:
+fields validation:
+- non existent fields
+- admin setting; username or email for user auth
+- admin setting: either username or email for auth
+- developer setting for allowing/dissallow multiple entry
+
+
+////////////////////////////////////////
 29th May 2019
 Setting up .sb-toggle-right:
 Challenge: $('.sb-toggle-right').click() not responding
@@ -56,6 +153,9 @@ solution: $ npm install perfect-scrollbar:
     psRightWrp.update();
 
 //////////////////////////////////////////////////
+
+Note that some type issues for JqueryStatic and Jquery<HTMLElement> have been sorted at typings.d.ts
+
 viewport() function error: has unresolved line:
     e = document.documentElement || document.body;
 

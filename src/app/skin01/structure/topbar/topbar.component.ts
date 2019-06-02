@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppStateService } from '../../../services/app-state.service';
 
 @Component({
   selector: 'app-topbar',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private appState: AppStateService /* injecting access to appState. Dectates layout modes eg login, anon, private */
+  ) {
+
+  }
 
   ngOnInit() {
+  }
+
+  logout() {
+    console.log('logout clicked');
+    this.appState.setMode('login');
   }
 
 }
