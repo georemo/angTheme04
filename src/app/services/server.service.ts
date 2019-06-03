@@ -8,17 +8,21 @@ import { Observable } from 'rxjs';
 })
 export class ServerService {
   url = 'http://localhost:8080/api/';
-  constructor(private http: HttpClient) { }
+  options;
 
-  public proc(params) {
-    let headers = new HttpHeaders({
+
+  constructor(private http: HttpClient) {
+    const h = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     });
-    let options = {
-      headers: headers
+    this.options = {
+      headers: h
     };
+  }
 
+  proc(params) {
+    console.log('starting ServerService::proc(params)');
     params = {
       "ctx": "Sys",
       "m": "User",
@@ -27,21 +31,46 @@ export class ServerService {
       "dat": { "username": "karl", "password": "secret" },
       "args": null
     };
-
-    this.http.post(this.url, params, options)
-      .subscribe(data => {
-        console.log("data from server1>>");
-        console.log(data);
-        //return data;
-      });
+    console.log('starting ServerService::proc(params)...04');
+    return this.http.post(this.url, params, this.options);
   }
 
-  extractData(res: Response) {
-    let body = res.json();
-    return body || {};
+  /*
+   *  testing vanilla js ajax
+   */
+  postXhr(data) {
+    console.log('starting postXhr(data)...01');
+    const http = new XMLHttpRequest();
+    console.log('starting postXhr(data)...02');
+    const url = this.url;
+    //const params = 'orem=ipsum&name=binny';
+    //var data = { one: 'first', two: 'second' };
+    const params = $.param(data);
+    http.open('POST', url, true);
+
+    // Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/json');
+
+    http.onreadystatechange = function () { // Call a function when the state changes.
+      if (http.readyState == 4 && http.status == 200) {
+        console.log('starting postXhr(data)...03');
+        console.dir(http.responseText);
+      }
+    }
+    http.send(data);
   }
-  handleErrorObservable(error: Response | any) {
-    console.error(error.message || error);
-    return Observable.throw(error.message || error);
+
+  /*
+   *  testing async
+   */
+  async foo(params) {
+    try {
+      const val = await this.proc(params);
+      console.log(val);
+      return val;
+    }
+    catch (err) {
+      console.log('Error: ', err.message);
+    }
   }
 }

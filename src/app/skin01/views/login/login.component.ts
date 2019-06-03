@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ServerService } from '../../../services/server.service';
 import { AppStateService } from '../../../services/app-state.service';
 import PerfectScrollbar from 'perfect-scrollbar';
@@ -9,8 +11,10 @@ import PerfectScrollbar from 'perfect-scrollbar';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  private authObservable: Observable<object>;
+  private productsObservable: Observable<object>;
   constructor(
+    private http: HttpClient,
     private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
     private server: ServerService /* injecting access to server communications services */
   ) {
@@ -241,6 +245,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(data) {
+    console.log('starting LoginComponent::login(data)...01');
     let loginSuccess = false;
     let params = {
       "ctx": "Sys",
@@ -250,10 +255,14 @@ export class LoginComponent implements OnInit {
       "dat": { "username": "karl", "password": "secret" },
       "args": null
     };
-    const ret = this.server.proc(params);
-    // console.log('LoginComponent::Login()::ret>>');
-    // console.dir(ret);
-
+    console.log('LoginComponent::login(data)...02');
+    this.authObservable = this.server.proc(params);
+    this.authObservable.subscribe((res) => {
+      console.log(res);
+      this.appState.setMode('anon');
+    });
+    this.appState.setMode('anon');
+    
   }
 
 }

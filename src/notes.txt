@@ -1,3 +1,14 @@
+authentication(work in progress)...3rd June 2019
+The login codes below is meant to setMode(state) but we are yet to controll the asyncronous processes.
+The first line should work as 'async' then 'await' the result to come from server before setMode(state).
+
+this.authObservable = this.server.proc(params);
+    this.authObservable.subscribe((res) => {
+      console.log(res);
+      this.appState.setMode('anon');
+    });
+    this.appState.setMode('anon');
+/////////////////////
 2nd June 2019:
 login front end:
 new includes based on rapido template:
