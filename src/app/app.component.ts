@@ -375,9 +375,7 @@ export class AppComponent {
             });
           }
         });
-      };// end runClosedBarButton()
-
-      
+      }; // end runClosedBarButton()
 
       runContainerHeight();
       runElementsPosition();

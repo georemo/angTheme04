@@ -1,3 +1,14 @@
+////////////////////////////////
+client server communication:
+6th June 2019:
+While testing with Login process, an issue arose that prevented server response.
+It turns out all we needed to do was to switch off form.submit().
+Currently client server communication is ok except for refining login process at the back end.
+- jtw coming up null independent of correct credentials or not
+- other data are not also switching to 'failed authentication' mode as required.
+
+
+//////////////////////////
 authentication(work in progress)...3rd June 2019
 The login codes below is meant to setMode(state) but we are yet to controll the asyncronous processes.
 The first line should work as 'async' then 'await' the result to come from server before setMode(state).

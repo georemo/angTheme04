@@ -2,8 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ServerService } from '../../../services/server.service';
+import { ApiClientService } from '../../../services/api-client.service';
 import { AppStateService } from '../../../services/app-state.service';
 import PerfectScrollbar from 'perfect-scrollbar';
+
+interface Resp {
+  app_state: any;
+  data: any;
+}
 
 @Component({
   selector: 'app-login',
@@ -11,14 +17,27 @@ import PerfectScrollbar from 'perfect-scrollbar';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  public resp: Resp;
+  private apiClient: ApiClientService;
   private authObservable: Observable<object>;
   private productsObservable: Observable<object>;
   constructor(
     private http: HttpClient,
     private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
-    private server: ServerService /* injecting access to server communications services */
+    private server: ServerService, /* injecting access to server communications services */
+    apiClient: ApiClientService
   ) {
+    this.apiClient = apiClient;
+    this.resp = {
+                  app_state: null,
+                  data: null
+                };
 
+    // In order to demonstrate that Axios will engage the XSRF protection, let's
+    // set an XSRF-TOKEN cookie.
+    // --
+    // NOTE: This would normally be some unpredictable value set by the server.
+    document.cookie = 'XSRF-TOKEN=server-generated-token';
   }
 
   ngOnInit() {
@@ -140,7 +159,7 @@ export class LoginComponent implements OnInit {
           },
           submitHandler: function (form) {
             errorHandler.hide();
-            form.submit();
+            //form.submit();
             //let qs = getParameterByName('loginQs');
             let inputs = $('#myForm :input');
             console.log('login success');
@@ -244,7 +263,60 @@ export class LoginComponent implements OnInit {
 
   }
 
-  login(data) {
+  async login(data) {
+    this.subLogin(data);
+    // this.obsvLogin(data);
+    // this.loadProducts();
+
+    // const params = {
+    //   "ctx": "Sys",
+    //   "m": "User",
+    //   "c": "UserController",
+    //   "a": "Login",
+    //   "dat": { "username": "karl", "password": "secret" },
+    //   "args": null
+    // };
+    // this.axiosLogin(params);
+  }
+
+  async subLogin(data) {
+    console.log('starting LoginComponent::subLogin(data)...01');
+    console.log('subLogin/data>>');
+    console.dir(data);
+    let loginSuccess = false;
+    let params = {
+      "ctx": "Sys",
+      "m": "User",
+      "c": "UserController",
+      "a": "Login",
+      "dat": { "username": data[0].val, "password": data[1].val },
+      "args": null
+    };
+
+    //this.server.proc1(params);
+
+    this.server.proc(params).subscribe((res) => {
+      console.log(res);
+      this.appState.setMode('anon');
+    });
+
+    // console.log('LoginComponent::login(data)...02');
+    // this.authObservable = this.server.proc(params);
+    // this.authObservable.subscribe((res) => {
+    //   console.log(res);
+    //   //this.appState.setMode('anon');
+    // });
+    //this.appState.setMode('anon');
+
+    // const ret = await this.server.procAsync(params);
+    // console.log('ret>>');
+    // console.dir(ret);
+    // this.appState.setMode('anon');
+
+    //await this.server.procAsync(params);
+  }
+
+  async obsvLogin(data) {
     console.log('starting LoginComponent::login(data)...01');
     let loginSuccess = false;
     let params = {
@@ -255,14 +327,93 @@ export class LoginComponent implements OnInit {
       "dat": { "username": "karl", "password": "secret" },
       "args": null
     };
+
     console.log('LoginComponent::login(data)...02');
     this.authObservable = this.server.proc(params);
     this.authObservable.subscribe((res) => {
       console.log(res);
       this.appState.setMode('anon');
     });
-    this.appState.setMode('anon');
-    
+    // this.appState.setMode('anon');
+
+    // const ret = await this.server.procAsync(params);
+    // console.log('ret>>');
+    // console.dir(ret);
+    // this.appState.setMode('anon');
+
+    //await this.server.procAsync(params);
+  }
+
+  // ---
+  // PUBLIC METHODS.
+  // Consuming axios services
+  // ---
+
+  // I load the list of friends.
+  // public async loadProducts(): Promise<void> {
+
+  //   try {
+
+  //     // NOTE: For the sake of simplicity, I'm letting the Component talk directly
+  //     // to the ApiClient. However, in a production app, I'd create an abstraction
+  //     // around Friend access (ie, something like FriendService or FriendGateway)
+  //     // which would handle the low-level details of the ApiClient request and
+  //     // error handling. But, since this is just a post about using Axios in
+  //     // Angular, I'm removing the middle man for the controlled scenario.
+  //     this.products = await this.apiClient.get<Product[]>({
+  //       url: 'http://localhost:3000/products'
+  //       /*
+  //       params: {
+  //         limit: 10
+  //       }
+  //       */
+  //     });
+
+  //     console.log('products>>');
+  //     console.dir(this.products);
+  //     this.appState.setMode('anon');
+
+  //   } catch (error) {
+
+  //     console.error(error);
+
+  //   }
+
+  //   // console.log('products>>');
+  //   // console.dir(this.products);
+  //   // this.appState.setMode('anon');
+
+  // }
+
+  public async axiosLogin(data): Promise<void> {
+
+    try {
+
+      // NOTE: For the sake of simplicity, I'm letting the Component talk directly
+      // to the ApiClient. However, in a production app, I'd create an abstraction
+      // around Friend access (ie, something like FriendService or FriendGateway)
+      // which would handle the low-level details of the ApiClient request and
+      // error handling. But, since this is just a post about using Axios in
+      // Angular, I'm removing the middle man for the controlled scenario.
+      this.resp = await this.apiClient.post<Resp>({
+        url: 'http://localhost:8080/api',
+        params: data
+      });
+
+      console.log('resp>>');
+      console.dir(this.resp);
+      this.appState.setMode('anon');
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+    // console.log('products>>');
+    // console.dir(this.products);
+    // this.appState.setMode('anon');
+
   }
 
 }

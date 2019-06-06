@@ -484,7 +484,7 @@ var SVExamples = function() {
         } else {
             noteIndex = el;
         }
-        $("#readNote .e-slider").data('owlCarousel').jumpTo(noteIndex);
+        //$("#readNote .e-slider").data('owlCarousel').jumpTo(noteIndex);
     };
 
     var checkNote = function() {
