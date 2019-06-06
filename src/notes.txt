@@ -1,3 +1,13 @@
+Auth progress
+6th June 2019:
+- Angular gui can login to laravel backend
+ToDo:
+    - apply user data from back end to gui
+    - apply menu data from back end to gui
+    - timeout (auto logout) based on sess:ttl
+    - cache design
+    - reload page and remember last page visited 
+
 ////////////////////////////////
 client server communication:
 6th June 2019:
@@ -18,7 +28,7 @@ this.authObservable = this.server.proc(params);
       console.log(res);
       this.appState.setMode('anon');
     });
-    this.appState.setMode('anon');
+this.appState.setMode('anon');
 /////////////////////
 2nd June 2019:
 login front end:

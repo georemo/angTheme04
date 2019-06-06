@@ -29,9 +29,9 @@ export class LoginComponent implements OnInit {
   ) {
     this.apiClient = apiClient;
     this.resp = {
-                  app_state: null,
-                  data: null
-                };
+      app_state: null,
+      data: null
+    };
 
     // In order to demonstrate that Axios will engage the XSRF protection, let's
     // set an XSRF-TOKEN cookie.
@@ -293,27 +293,16 @@ export class LoginComponent implements OnInit {
       "args": null
     };
 
-    //this.server.proc1(params);
-
     this.server.proc(params).subscribe((res) => {
       console.log(res);
-      this.appState.setMode('anon');
+      if (res['app_state']['success'] == 1 && res['app_state']['sess']['cd_token'] !== null) {
+        this.appState.setMode('anon');
+      } else {
+        //show error in form
+        this.appState.setMode('login');
+      }
     });
 
-    // console.log('LoginComponent::login(data)...02');
-    // this.authObservable = this.server.proc(params);
-    // this.authObservable.subscribe((res) => {
-    //   console.log(res);
-    //   //this.appState.setMode('anon');
-    // });
-    //this.appState.setMode('anon');
-
-    // const ret = await this.server.procAsync(params);
-    // console.log('ret>>');
-    // console.dir(ret);
-    // this.appState.setMode('anon');
-
-    //await this.server.procAsync(params);
   }
 
   async obsvLogin(data) {
