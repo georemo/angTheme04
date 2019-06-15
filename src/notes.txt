@@ -1,3 +1,26 @@
+
+Fixed: sub-menus now displaying
+15th June 2019
+For some reason, jquery selection was not working properly. This was required for detecting menu-click
+specifically, the selection below was not working:
+$('.main-navigation-menu > li a');
+however, this works:
+$('.main-navigation-menu');
+
+Fix:
+Selection was done with typescript then jquery selection was done via id selection.
+The above was a compromise for minimizing recoding the gui.
+
+Recommendation:
+JQuery should be phased out eventually.
+
+issue: Deprecation 
+    - getExpiration()
+    - Mon Jun 10 2019 19:03:09 GMT+0300
+warning: value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date()
+
+
+////////////////////////////////
 Auth progress
 6th June 2019:
 - Angular gui can login to laravel backend
@@ -7,6 +30,7 @@ ToDo:
     - timeout (auto logout) based on sess:ttl
     - cache design
     - reload page and remember last page visited 
+    
 
 ////////////////////////////////
 client server communication:

@@ -6,6 +6,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
 import { TopbarComponent } from './skin01/structure/topbar/topbar.component';
 import { SidebarComponent } from './skin01/structure/sidebar/sidebar.component';
 import { PagesliderightComponent } from './skin01/structure/pageslideright/pageslideright.component';
@@ -46,6 +50,9 @@ import { UiTypographyComponent } from './skin01/views/sdk/ui-typography/ui-typog
 import { Dashboard1Component } from './skin01/views/dashboard1/dashboard1.component';
 import { LoginComponent } from './skin01/views/login/login.component';
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
@@ -93,9 +100,13 @@ import { LoginComponent } from './skin01/views/login/login.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    PerfectScrollbarModule
   ],
-  providers: [],
+  providers: [{
+    provide: PERFECT_SCROLLBAR_CONFIG,
+    useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

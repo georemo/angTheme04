@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppStateService } from '../../../services/app-state.service';
+// import { AppStateService } from '../../../services/app-state.service';
+import { SessService } from '../../../services/sess.service';
+
 
 @Component({
   selector: 'app-topbar',
@@ -9,7 +11,8 @@ import { AppStateService } from '../../../services/app-state.service';
 export class TopbarComponent implements OnInit {
 
   constructor(
-    private appState: AppStateService /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    // private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    private sess: SessService
   ) {
 
   }
@@ -19,7 +22,7 @@ export class TopbarComponent implements OnInit {
 
   logout() {
     console.log('logout clicked');
-    this.appState.setMode('login');
+    this.sess.logout();
   }
 
 }

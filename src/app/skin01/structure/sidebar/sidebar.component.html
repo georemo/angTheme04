@@ -1,6 +1,6 @@
 <div class="main-navigation left-wrapper transition-left">
   <div class="navigation-toggler hidden-sm hidden-xs">
-    <a href="index.html#main-navbar" class="sb-toggle-left">
+    <a href="#" class="sb-toggle-left">
     </a>
   </div>
   <div class="user-profile border-top padding-horizontal-10 block">
@@ -20,8 +20,8 @@
     <!-- start recursive templete -->
     <ng-template #recursiveList let-list>
       <li *ngFor="let item of list" >
-        <a href="#"><i class="{{item.icon}}" ></i>
-          <span class="title" (click)="loadDesktop(item)"> {{item.title}} </span>
+        <a id="a_{{item.id}}" href="#"><i class="{{item.icon}}" ></i>
+          <span id="span_{{item.id}}" class="title" (click)="loadDesktop(item)"> {{item.title}} </span>
           <i class="icon-arrow"></i>
         </a>
         <ul *ngIf="item.children.length > 0" class="sub-menu">

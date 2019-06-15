@@ -43,7 +43,7 @@ export class MenuModel {
             title: 'MyDesk',
             href: '#',
             icon: 'fa fa-home',
-            id: 'm0',
+            id: 'm1',
             module: 'user', controller: 'user', action: 'action1',
             d: {
                 title: 'MyDesk',
@@ -56,7 +56,7 @@ export class MenuModel {
                 title: 'Profile',
                 href: '#',
                 icon: 'fa fa-desktop',
-                id: 'm1',
+                id: 'm2',
                 module: 'user', controller: 'userprofile', action: 'getprofile',
                 d: {
                     title: 'MyProfile',
@@ -86,7 +86,7 @@ export class MenuModel {
             title: 'Admin',
             href: '#',
             icon: 'fa fa-desktop',
-            id: 'm2',
+            id: 'm4',
             module: 'user', controller: 'user', action: 'action3',
             d: {
                 title: 'Admin',
@@ -99,7 +99,7 @@ export class MenuModel {
                 title: 'Admin Dashboard',
                 href: '#',
                 icon: '',
-                id: 'm1',
+                id: 'm5',
                 module: 'moduleman', controller: 'sysset', action: 'getsettings',
                 d: {
                     title: 'Admin Dashboard',

@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import { Component } from '@angular/core';
+import { fromEvent } from 'rxjs';
 import { AppStateService } from './services/app-state.service';
+import { SessService } from './services/sess.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 // declare var $: any;
 import * as moment from 'moment';
@@ -12,10 +14,12 @@ import * as moment from 'moment';
 })
 export class AppComponent {
   title = 'angTheme04';
+  subscription;
 
   constructor(
-    private appState: AppStateService /* injecting access to appState. Dectates layout modes eg login, anon, private */
-    ) {
+    private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    private sess: SessService
+  ) {
   }
   public ngOnInit() {
 
@@ -35,11 +39,15 @@ export class AppComponent {
       const subViews = $('.subviews');
       const topBar = $('.topbar');
       const mainNavigation = $('.main-navigation');
-      const mainContent = $(".main-content");
-      const footer = $(".main-wrapper > footer");
+      const mainContent = $('.main-content');
+      const footer = $('.main-wrapper > footer');
 
-      const psMainNavigation = new PerfectScrollbar('.main-navigation');
-      const psRightWrp = new PerfectScrollbar('.right-wrapper');
+      console.log('...01');
+      // const mn = document.querySelector('.main-navigation');
+      // const psMainNavigation = new PerfectScrollbar('.main-navigation');
+      console.log('...02');
+      // const psRightWrp = new PerfectScrollbar('.right-wrapper');
+      console.log('...03');
 
       // function to get viewport/window size (width and height)
       const viewport = function () {
@@ -91,10 +99,10 @@ export class AppComponent {
         });
 
         if ($body.hasClass("isMobile") == false && mainNavigation.length) {
-          // mainNavigation.perfectScrollbar('update');
-          // $('.right-wrapper').perfectScrollbar('update');
-          psMainNavigation.update();
-          psRightWrp.update();
+          mainNavigation.perfectScrollbar('update');
+          $('.right-wrapper').perfectScrollbar('update');
+          // psMainNavigation.update();
+          // psRightWrp.update();
         }
         if ($("#horizontal-menu").length) {
           mainContent.css({
@@ -126,8 +134,8 @@ export class AppComponent {
 
       // function to Right and Left PageSlide
       const runToggleSideBars = function () {
-        let configAnimation; 
-        let extendOptions; 
+        let configAnimation;
+        let extendOptions;
         let globalOptions = {
           duration: 150,
           mobileHA: true,
@@ -140,7 +148,11 @@ export class AppComponent {
         }).on("mouseleave", function (e) {
           hoverSideBar = false;
         });
-        $(".sb-toggle-left, .closedbar").on("click", function (e) {
+
+
+
+        $('.sb-toggle-left, .closedbar').on('click', (e) => {
+          // e.preventDefault();
           console.log('.sb-toggle-left clicked');
           if (activeAnimation == false) {
             console.log('activeAnimation == false');
@@ -383,7 +395,36 @@ export class AppComponent {
       runClosedBarButton();
     }); // end jq on ready()
 
+    //let subRet;
+    const maxDistance = this.sess.maxDistance;
+    this.subscription =
+      fromEvent(document, 'mousemove')
+        .subscribe(e => {
+          // console.log(e);
+          // if (this.sess.isLoggedIn()) {
+          //   console.log('loggedin == ture');
+          //   const now = new Date().getTime();
+          //   console.log('now>>');
+          //   console.log(now);
+          //   console.log('this.sess.maxDistance>>');
+          //   console.log(this.sess.maxDistance);
+          //   console.log('maxDistance>>');
+          //   console.log(localStorage.getItem('maxDistance'));
+          //   this.sess.countDownDate = now + Number(localStorage.getItem('maxDistance'));
+          //   console.log('this.sess.countDownDate>>');
+          //   console.log(this.sess.countDownDate);
+          //   // console.log('subRet>>');
+          //   // console.dir(subRet);
+          //   // this.countDownDate = subRet;
+          // }
+        });
+
   } // end ngOnInit()
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    //this.sess.logout();
+  }
 
 
 } // end class AppComponent

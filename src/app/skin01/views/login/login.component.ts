@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ServerService } from '../../../services/server.service';
 import { ApiClientService } from '../../../services/api-client.service';
 import { AppStateService } from '../../../services/app-state.service';
+import { SessService } from '../../../services/sess.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 
 interface Resp {
@@ -17,15 +18,17 @@ interface Resp {
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  postData;
   public resp: Resp;
-  private apiClient: ApiClientService;
+  // private apiClient: ApiClientService;
   private authObservable: Observable<object>;
   private productsObservable: Observable<object>;
   constructor(
     private http: HttpClient,
     private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
     private server: ServerService, /* injecting access to server communications services */
-    apiClient: ApiClientService
+    private apiClient: ApiClientService,
+    private sess: SessService
   ) {
     this.apiClient = apiClient;
     this.resp = {
@@ -266,44 +269,46 @@ export class LoginComponent implements OnInit {
   async login(data) {
     this.subLogin(data);
     // this.obsvLogin(data);
-    // this.loadProducts();
-
-    // const params = {
-    //   "ctx": "Sys",
-    //   "m": "User",
-    //   "c": "UserController",
-    //   "a": "Login",
-    //   "dat": { "username": "karl", "password": "secret" },
-    //   "args": null
-    // };
-    // this.axiosLogin(params);
   }
 
   async subLogin(data) {
-    console.log('starting LoginComponent::subLogin(data)...01');
-    console.log('subLogin/data>>');
-    console.dir(data);
-    let loginSuccess = false;
-    let params = {
-      "ctx": "Sys",
-      "m": "User",
-      "c": "UserController",
-      "a": "Login",
-      "dat": { "username": data[0].val, "password": data[1].val },
-      "args": null
-    };
-
-    this.server.proc(params).subscribe((res) => {
+    // set postData for authentication
+    this.setAuthPost(data);
+    /*
+    post login request to server
+    */
+    this.server.proc(this.postData).subscribe((res) => {
       console.log(res);
       if (res['app_state']['success'] == 1 && res['app_state']['sess']['cd_token'] !== null) {
-        this.appState.setMode('anon');
+        /*
+        create a session on successfull authentication.
+        For subsequeng successull request to the server,
+        use renewSess(res);
+        */
+        this.sess.createSess(res);
       } else {
-        //show error in form
-        this.appState.setMode('login');
+        // show error in form
+        this.sess.logout();
       }
     });
 
   }
+
+  setAuthPost(data) {
+    /*
+    set post data
+    */
+    this.postData = {
+      ctx: 'Sys',
+      m: 'User',
+      c: 'UserController',
+      a: 'Login',
+      dat: { username: data[0].val, password: data[1].val },
+      args: null
+    };
+  }
+
+
 
   async obsvLogin(data) {
     console.log('starting LoginComponent::login(data)...01');
@@ -332,47 +337,6 @@ export class LoginComponent implements OnInit {
 
     //await this.server.procAsync(params);
   }
-
-  // ---
-  // PUBLIC METHODS.
-  // Consuming axios services
-  // ---
-
-  // I load the list of friends.
-  // public async loadProducts(): Promise<void> {
-
-  //   try {
-
-  //     // NOTE: For the sake of simplicity, I'm letting the Component talk directly
-  //     // to the ApiClient. However, in a production app, I'd create an abstraction
-  //     // around Friend access (ie, something like FriendService or FriendGateway)
-  //     // which would handle the low-level details of the ApiClient request and
-  //     // error handling. But, since this is just a post about using Axios in
-  //     // Angular, I'm removing the middle man for the controlled scenario.
-  //     this.products = await this.apiClient.get<Product[]>({
-  //       url: 'http://localhost:3000/products'
-  //       /*
-  //       params: {
-  //         limit: 10
-  //       }
-  //       */
-  //     });
-
-  //     console.log('products>>');
-  //     console.dir(this.products);
-  //     this.appState.setMode('anon');
-
-  //   } catch (error) {
-
-  //     console.error(error);
-
-  //   }
-
-  //   // console.log('products>>');
-  //   // console.dir(this.products);
-  //   // this.appState.setMode('anon');
-
-  // }
 
   public async axiosLogin(data): Promise<void> {
 
