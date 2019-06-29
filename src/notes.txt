@@ -1,4 +1,17 @@
 
+
+Test Memo as working module:
+29th June 2019
+- implement getUserData
+- implement menu from server
+- test use of component field in menu_data (use memo for test)
+- develop module structures using memo as a test subject
+- list memo messages
+- hilight selected memo
+- show message
+
+/////////////////////////////
+
 Fixed: sub-menus now displaying
 15th June 2019
 For some reason, jquery selection was not working properly. This was required for detecting menu-click

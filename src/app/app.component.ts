@@ -401,29 +401,31 @@ export class AppComponent {
       fromEvent(document, 'mousemove')
         .subscribe(e => {
           // console.log(e);
-          // if (this.sess.isLoggedIn()) {
-          //   console.log('loggedin == ture');
-          //   const now = new Date().getTime();
-          //   console.log('now>>');
-          //   console.log(now);
-          //   console.log('this.sess.maxDistance>>');
-          //   console.log(this.sess.maxDistance);
-          //   console.log('maxDistance>>');
-          //   console.log(localStorage.getItem('maxDistance'));
-          //   this.sess.countDownDate = now + Number(localStorage.getItem('maxDistance'));
-          //   console.log('this.sess.countDownDate>>');
-          //   console.log(this.sess.countDownDate);
-          //   // console.log('subRet>>');
-          //   // console.dir(subRet);
-          //   // this.countDownDate = subRet;
-          // }
+          if (this.sess.isLoggedIn() && this.sess.config.countdown) {
+            // console.log('this.sess.config.countdown>>');
+            // console.log(this.sess.config.countdown);
+            // console.log('loggedin == ture');
+            const now = new Date().getTime();
+            // console.log('now>>');
+            // console.log(now);
+            // console.log('this.sess.maxDistance>>');
+            // console.log(this.sess.maxDistance);
+            // console.log('maxDistance>>');
+            // console.log(localStorage.getItem('maxDistance'));
+            this.sess.countDownDate = now + Number(localStorage.getItem('maxDistance'));
+            // console.log('this.sess.countDownDate>>');
+            // console.log(this.sess.countDownDate);
+            // console.log('subRet>>');
+            // console.dir(subRet);
+            // this.countDownDate = subRet;
+          }
         });
 
   } // end ngOnInit()
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    //this.sess.logout();
+    this.sess.logout();
   }
 
 

@@ -2,7 +2,9 @@ import { Injectable, HostListener } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import * as moment from 'moment';
 
+import { ServerService } from './server.service';
 import { AppStateService } from './app-state.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,15 @@ export class SessService {
   maxDistance;
   countDownDate;
   endTime;
+  postData;
+  config = {
+    countdown: false
+  };
 
   constructor(
-    private appState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    private svAppState: AppStateService, /* injecting access to appState. Dectates layout modes eg login, anon, private */
+    private svServer: ServerService,
+    private svUser: UserService,
   ) {
 
   }
@@ -28,7 +36,7 @@ export class SessService {
   createSess(res) {
     console.log('starting createSess(res)');
     this.setSess(res);
-    this.appState.setMode('anon');
+    this.svUser.getUserData(res);
   }
 
   setSess(res) {
@@ -39,7 +47,10 @@ export class SessService {
     localStorage.setItem('maxDistance', this.maxDistance);
     localStorage.setItem('sess', JSON.stringify(sess));
     localStorage.setItem('ExprTime', this.getExprTime(ttl));
-    // this.countDown(this.getExprTime(ttl));
+    if (this.config.countdown) {
+      this.countDown(this.getExprTime(ttl));
+    }
+
   }
 
   resetExprTime(ttl) {
@@ -59,7 +70,7 @@ export class SessService {
     console.log('starting logout()');
     this.killSess();
     // set gui to loged out state
-    this.appState.setMode('login');
+    this.svAppState.setMode('login');
   }
 
   killSess() {
@@ -67,29 +78,74 @@ export class SessService {
     localStorage.removeItem('sess');
     localStorage.removeItem('ExprTime');
     clearTimeout(this.countdown);
+    this.killSessServer();
+  }
+
+  async killSessServer() {
+    const data = {
+      action: 'kill',
+      dat: null
+    }
+    this.setSessPost(data);
+    /*
+    post login request to server
+    */
+    this.svServer.proc(this.postData).subscribe((res) => {
+      console.log(res);
+    });
+
+  }
+
+  async renewSessServer() {
+    const data = {
+      action: 'renew',
+      dat: null
+    }
+    this.setSessPost(data);
+    /*
+    post login request to server
+    */
+    this.svServer.proc(this.postData).subscribe((res) => {
+      console.log(res);
+    });
+
+  }
+
+  setSessPost(data) {
+    /*
+    set post data
+    */
+    this.postData = {
+      ctx: 'Sys',
+      m: 'User',
+      c: 'SessionController',
+      a: data.action,
+      dat: data.dat,
+      args: null
+    };
   }
 
   public isLoggedIn() {
-    console.log('starting isLoggedIn()');
+    // console.log('starting isLoggedIn()');
     const ret = moment().isBefore(this.getExpiration());
-    console.log('ret>>');
-    console.log(ret);
+    // console.log('ret>>');
+    // console.log(ret);
     return ret;
   }
 
   isLoggedOut() {
-    console.log('starting isLoggedOut()');
+    // console.log('starting isLoggedOut()');
     return !this.isLoggedIn();
   }
 
   getExpiration() {
-    console.log('starting getExpiration()');
+    // console.log('starting getExpiration()');
     const expiration = localStorage.getItem('ExprTime');
-    console.dir(expiration);
+    // console.dir(expiration);
     // return moment(expiration);
     const ret = new Date(expiration);
-    console.log('ret>>');
-    console.log(ret);
+    // console.log('ret>>');
+    // console.log(ret);
     return ret;
   }
 
@@ -189,12 +245,7 @@ export class SessService {
     this.countDown(ttl);
   }
 
-  // @HostListener('document:mousemove', ['$event'])
-  // onMouseMove(e) {
-  //   console.dir(e);
-  // }
-
-
-
+  
+  
 
 }

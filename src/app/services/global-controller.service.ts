@@ -2291,73 +2291,96 @@ export class GlobalControllerService {
       console.log(isOpen);
       const subMenu = this.getSubMenu(selMenu);
       const screenCat = this.getScreenCategory();
-      const bodyHasNavSmall = this.$body.hasClass('navigation-small');
-      const mainNavigation = $('.main-navigation');
+      const $body = this.$body;
+      const bodyHasNavSmall = $body.hasClass('navigation-small');
+      const mainNavigation = this.mainNavigation;
 
 
-      // confirm isMenuClick()
-      //* if (event.target['tagName'] == 'SPAN' || event.target['tagName'] == 'A') { // start if
-      if ($($selMenu).parent().children('ul').hasClass('sub-menu') && ((!this.$body.hasClass('navigation-small') || this.screenWidth < 767) || !$($selMenu).parent().parent().hasClass('main-navigation-menu'))) {
+      if ($($selMenu).parent().children('ul').hasClass('sub-menu') &&
+        ((!$body.hasClass('navigation-small') ||
+          this.screenWidth < 767) || !$($selMenu).parent().parent().hasClass('main-navigation-menu'))) {
+        console.log('track menuClose...01');
         if (!$($selMenu).parent().hasClass('open')) {
+          console.log('track menuClose...02');
           $($selMenu).parent().addClass('open');
           $($selMenu).parent().parent().children('li.open').not($($selMenu).parent()).not($('.main-navigation-menu > li.active')).removeClass('open').children('ul').slideUp(200);
           $($selMenu).parent().children('ul').slideDown(200, function () {
+            console.log('track menuClose...03');
             if (mainNavigation.height() > $(".main-navigation-menu").outerHeight()) {
-
-              mainNavigation.scrollTo($(this).parent("li"), 300, {
+              console.log('track menuClose...04');
+              mainNavigation.scrollTo($($selMenu).parent("li"), 300, {
                 onAfter: function () {
-                  if (this.$body.hasClass("isMobile") == false) {
-                    this.mainNavigation.perfectScrollbar('update');
+                  console.log('track menuClose...05');
+                  if ($body.hasClass("isMobile") == false) {
+                    console.log('track menuClose...06');
+                    mainNavigation.perfectScrollbar('update');
                   }
                 }
               });
             } else {
-
-              mainNavigation.scrollTo($(this).parent("li"), 300, {
+              console.log('track menuClose...07');
+              mainNavigation.scrollTo($($selMenu).parent("li"), 300, {
                 onAfter: function () {
-                  if (this.$body.hasClass("isMobile") == false) {
-                    this.mainNavigation.perfectScrollbar('update');
+                  console.log('track menuClose...08');
+                  if ($body.hasClass("isMobile") == false) {
+                    mainNavigation.perfectScrollbar('update');
                   }
                 }
               });
             }
           });
         } else {
-          if (!$(this).parent().hasClass('active')) {
-            $(this).parent().parent().children('li.open').not($('.main-navigation-menu > li.active')).removeClass('open').children('ul').slideUp(200, function () {
-              if (this.mainNavigation.height() > $(".main-navigation-menu").outerHeight()) {
-                this.mainNavigation.scrollTo(0, 300, {
+          console.log('track menuClose...09');
+          if (!$($selMenu).parent().hasClass('active')) {
+            console.log('track menuClose...10');
+            $($selMenu).parent().parent().children('li.open').not($('.main-navigation-menu > li.active')).removeClass('open').children('ul').slideUp(200, function () {
+              console.log('track menuClose...11');
+              if (mainNavigation.height() > $(".main-navigation-menu").outerHeight()) {
+                console.log('track menuClose...12');
+                mainNavigation.scrollTo(0, 300, {
                   onAfter: function () {
-                    if (this.$body.hasClass("isMobile") == false) {
-                      this.mainNavigation.perfectScrollbar('update');
+                    console.log('track menuClose...13');
+                    if ($body.hasClass("isMobile") == false) {
+                      console.log('track menuClose...14');
+                      mainNavigation.perfectScrollbar('update');
                     }
                   }
                 });
               } else {
-                this.mainNavigation.scrollTo($(this).parent("li").closest("ul").children("li:eq(0)"), 300, {
+                console.log('track menuClose...15');
+                mainNavigation.scrollTo($($selMenu).parent("li").closest("ul").children("li:eq(0)"), 300, {
                   onAfter: function () {
-                    if (this.$body.hasClass("isMobile") == false) {
-                      this.mainNavigation.perfectScrollbar('update');
+                    console.log('track menuClose...16');
+                    if ($body.hasClass("isMobile") == false) {
+                      console.log('track menuClose...17');
+                      mainNavigation.perfectScrollbar('update');
                     }
                   }
                 });
               }
             });
           } else {
-            $(this).parent().parent().children('li.open').removeClass('open').children('ul').slideUp(200, function () {
-              if (this.mainNavigation.height() > $(".main-navigation-menu").outerHeight()) {
-                this.mainNavigation.scrollTo(0, 300, {
+            console.log('track menuClose...18');
+            $($selMenu).parent().parent().children('li.open').removeClass('open').children('ul').slideUp(200, function () {
+              console.log('track menuClose...19');
+              if (mainNavigation.height() > $(".main-navigation-menu").outerHeight()) {
+                console.log('track menuClose...20');
+                mainNavigation.scrollTo(0, 300, {
                   onAfter: function () {
-                    if (this.$body.hasClass("isMobile") == false) {
-                      this.mainNavigation.perfectScrollbar('update');
+                    console.log('track menuClose...21');
+                    if ($body.hasClass("isMobile") == false) {
+                      console.log('track menuClose...22');
+                      mainNavigation.perfectScrollbar('update');
                     }
                   }
                 });
               } else {
-                this.mainNavigation.scrollTo($(this).parent("li"), 300, {
+                console.log('track menuClose...23');
+                mainNavigation.scrollTo($($selMenu).parent("li"), 300, {
                   onAfter: function () {
-                    if (this.$body.hasClass("isMobile") == false) {
-                      this.mainNavigation.perfectScrollbar('update');
+                    if ($body.hasClass("isMobile") == false) {
+                      console.log('track menuClose...24');
+                      mainNavigation.perfectScrollbar('update');
                     }
                   }
                 });
@@ -2366,9 +2389,10 @@ export class GlobalControllerService {
           }
         }
       } else {
-        $(this).parent().addClass('active');
+        console.log('track menuClose...25');
+        $($selMenu).parent().addClass('active');
       }
-      //* } // end if (event.target['tagName'] == 'SPAN' || event.target['tagName'] == 'A')
+      
 
     }); // end this.testCss[0].addEventListener('click', (event) => {
   } // start detectCss()

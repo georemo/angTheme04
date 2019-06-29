@@ -1,17 +1,17 @@
 
 export class MenuItem {
-    title;
+    menu_lable;
     href;
     icon;
     lable;
-    id;
+    menu_id;
     childID;
-    constructor(title, href, icon, lable, id, childID) {
-        this.title = title;
+    constructor(menu_lable, href, icon, lable, menu_id, childID) {
+        this.menu_lable = menu_lable;
         this.href = href;
         this.icon = icon;
         this.lable = lable;
-        this.id = id;
+        this.menu_id = menu_id;
         this.childID = childID;
     }
 
@@ -24,10 +24,10 @@ export class MenuModel {
     menuitems;
     constructor() {
         this.menuitems = [{
-            title: 'Home',
+            menu_lable: 'Home', // menu_lable
             href: '#',
-            icon: 'fa fa-home',
-            id: 'm0',
+            icon: 'fa fa-home', // icon
+            menu_id: 'm0', // menu_id
             module: 'user', controller: 'user', action: 'action1',
             d: {
                 title: 'Home',
@@ -40,10 +40,10 @@ export class MenuModel {
         },
         {
 
-            title: 'MyDesk',
+            menu_lable: 'MyDesk',
             href: '#',
             icon: 'fa fa-home',
-            id: 'm1',
+            menu_id: 'm1',
             module: 'user', controller: 'user', action: 'action1',
             d: {
                 title: 'MyDesk',
@@ -53,10 +53,10 @@ export class MenuModel {
                 docType: ''
             },
             children: [{
-                title: 'Profile',
+                menu_lable: 'Profile',
                 href: '#',
                 icon: 'fa fa-desktop',
-                id: 'm2',
+                menu_id: 'm2',
                 module: 'user', controller: 'userprofile', action: 'getprofile',
                 d: {
                     title: 'MyProfile',
@@ -67,10 +67,10 @@ export class MenuModel {
                 },
                 children: []
             }, {
-                title: 'Messages',
+                menu_lable: 'Messages',
                 href: '#',
                 icon: 'fa fa-desktop',
-                id: 'm3',
+                menu_id: 'm3',
                 module: 'user', controller: 'user', action: 'action4',
                 d: {
                     title: 'Messages',
@@ -83,10 +83,10 @@ export class MenuModel {
             }]
         },
         {
-            title: 'Admin',
+            menu_lable: 'Admin',
             href: '#',
             icon: 'fa fa-desktop',
-            id: 'm4',
+            menu_id: 'm4',
             module: 'user', controller: 'user', action: 'action3',
             d: {
                 title: 'Admin',
@@ -96,10 +96,10 @@ export class MenuModel {
                 docType: 'CumulativeLine',
             },
             children: [{
-                title: 'Admin Dashboard',
+                menu_lable: 'Admin Dashboard',
                 href: '#',
                 icon: '',
-                id: 'm5',
+                menu_id: 'm5',
                 module: 'moduleman', controller: 'sysset', action: 'getsettings',
                 d: {
                     title: 'Admin Dashboard',

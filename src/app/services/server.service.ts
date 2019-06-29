@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServerService {
-  url = 'http://localhost:8000/api/';
+  url = 'http://localhost:8080/api/';
   options;
 
 
@@ -19,6 +19,7 @@ export class ServerService {
     this.options = {
       headers: h
     };
+
   }
 
   proc(params) {
@@ -58,4 +59,5 @@ export class ServerService {
     }
     http.send(data);
   }
+
 }

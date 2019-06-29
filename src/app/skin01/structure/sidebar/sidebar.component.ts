@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { GlobalControllerService } from '../../../services/global-controller.service';
-import { MenuController } from './menucontroller';
+import { ServerService } from '../../../services/server.service';
+import { SessService } from '../../../services/sess.service';
+import { MenuService } from '../../../services/menu.service';
+import { UserService } from '../../../services/user.service';
+
+// import { MenuController } from './menucontroller';
 import { DesktopComponent } from '../../views/desktop/desktop.component';
 
 @Component({
@@ -12,7 +17,12 @@ import { DesktopComponent } from '../../views/desktop/desktop.component';
 export class SidebarComponent implements OnInit {
   menucontroller;
   desktop;
+  // svMenu;
   list;
+  userData;
+  userName;
+  avatarLg;
+  avatarSm;
 
   //////////////////
   $body = $('body');
@@ -36,15 +46,38 @@ export class SidebarComponent implements OnInit {
   configAnimation;
   globalOptions;
   /////////////////
-  constructor(private gcs: GlobalControllerService) {
-    this.menucontroller = new MenuController();
+  constructor(
+    private gcs: GlobalControllerService,
+    private svServer: ServerService,
+    private svSess: SessService,
+    private svMenu: MenuService,
+    private svUser: UserService
+  ) {
     this.desktop = new DesktopComponent();
-    this.list = this.menucontroller.menudata;
+    this.init();
 
+  }
+
+  init() {
+    this.list = this.svMenu.menuitems;
+    this.userData = this.svUser.userData;
+    this.userName = this.userData[0]['fname'] + ' ' + this.userData[0]['lname'];
+    this.setAvatar(this.userData[0]['avatar']);
     this.sidebarWidth = this.sideLeft.outerWidth(true);
   }
 
+  setList(menu) {
+    this.list = menu;
+  }
+
+  setAvatar(strImg) {
+    const jImg = JSON.parse(strImg);
+    this.avatarLg = jImg['large'];
+    this.avatarSm = jImg['small'];
+  }
+
   ngOnInit() {
+    // this.list = this.svMenu.menuitems;
     this.globalOptions = {
       duration: 150,
       mobileHA: true,
@@ -57,11 +90,97 @@ export class SidebarComponent implements OnInit {
     this.gcs.main();
   }
 
-  loadDesktop(menuData) {
-    // const d = menuData.d;
-    // const htmlString = this.desktop.getPage(d);
-    // $('#main-content').html(htmlString);
+  async loadDesktop(menuData) {
+    console.log('starting loadDesktop');
+    console.log(menuData);
+    const d = {
+      title: menuData['menu_lable'],
+      subTitle: this.setSubTitle(menuData),
+      breadcrumb: this.setBreadcrumb(menuData),
+      component: this.setComponent(menuData),
+      componentData: await this.getComponentData(menuData)
+    };
+    menuData.d = d;
+    console.log('desktopData>>');
+    console.log(menuData);
     this.desktop.load(menuData);
+  }
+
+  // will need string manipulation as default, else use cd_obj_disp_name
+  setSubTitle(menuData) {
+    return menuData['cd_obj_name'];
+  }
+
+  // array of menu lineage. 
+  // use json lib to get parent of all preceeding parents
+  setBreadcrumb(menuData) {
+    return [menuData['module_name'], menuData['menu_lable']];//temporary setting for demo
+  }
+
+  /*
+  determine which component will display the menu item
+  */
+  setComponent(menuData) {
+    let ret;
+    if (menuData['component']) {
+      ret = menuData['component'];
+    } else {
+      ret = 'calendar';
+    }
+    return ret;
+  }
+
+  /*
+  Fetch component data from db
+  */
+  async getComponentData(menuData) {
+    console.log('getComponentData(menuData)');
+    let ret = null;
+    if (menuData['menu_cmd']) {
+      console.log('sending menu cmd');
+      ret = await this.cmd(menuData);
+      console.log('menu cmd response');
+      console.log(ret);
+      return ret;
+
+    }
+
+    return ret;
+  }
+
+  /*
+  invoked everytime a menu item is clicked
+  - menu data has menu_cmd field. 
+  - menu_cmd contains the request command for setting up the data for menu item
+  */
+  async cmd(menuData) {
+    const cmd = menuData['menu_cmd'];
+    console.log('menuData>>');
+    console.log(menuData);
+    console.log('menuCmd>>');
+    console.log(cmd);
+    const jCmd = JSON.parse(cmd);
+    const token = this.svSess.getCdToken();
+    jCmd['dat']['token'] = token;
+    console.log('jCmd>>');
+    console.log(jCmd);
+    /*
+    post login request to server
+    */
+    this.svServer.proc(jCmd).subscribe(async (res) => {
+      console.log(res);
+      const d = {
+        title: menuData['menu_lable'],
+        subTitle: this.setSubTitle(menuData),
+        breadcrumb: this.setBreadcrumb(menuData),
+        component: this.setComponent(menuData),
+        componentData: res
+      };
+      menuData.d = d;
+      console.log('desktopData>>');
+      console.log(menuData);
+      this.desktop.load(menuData);
+    });
   }
 
   sbToggleLeft() {

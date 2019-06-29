@@ -5,11 +5,11 @@
   </div>
   <div class="user-profile border-top padding-horizontal-10 block">
     <div class="inline-block">
-      <img src="assets/images/avatar-1.jpg" alt="">
+      <img src="{{avatarLg}}" alt="">
     </div>
     <div class="inline-block">
       <h5 class="no-margin"> Welcome </h5>
-      <h4 class="no-margin"> Peter Clark </h4>
+      <h4 class="no-margin"> {{userName}} </h4>
       <a class="btn user-options sb_toggle">
         <i class="fa fa-cog"></i>
       </a>
@@ -20,8 +20,8 @@
     <!-- start recursive templete -->
     <ng-template #recursiveList let-list>
       <li *ngFor="let item of list" >
-        <a id="a_{{item.id}}" href="#"><i class="{{item.icon}}" ></i>
-          <span id="span_{{item.id}}" class="title" (click)="loadDesktop(item)"> {{item.title}} </span>
+        <a id="a_{{item.menu_id}}" href="#"><i class="{{item.icon}}" ></i>
+          <span id="span_{{item.menu_id}}" class="title" (click)="loadDesktop(item)"> {{item.menu_lable}} </span>
           <i class="icon-arrow"></i>
         </a>
         <ul *ngIf="item.children.length > 0" class="sub-menu">

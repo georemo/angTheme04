@@ -18,7 +18,8 @@ export class DesktopComponent implements OnInit {
     chart;
     messages;
     dashboard;
-    constructor() {
+    constructor(
+    ) {
         this.userprofile = new UserProfileComponent();
         this.calendar = new CalendarComponent();
         this.chart = new ChartComponent();
@@ -30,9 +31,38 @@ export class DesktopComponent implements OnInit {
     }
 
     load(menuData) {
+        console.log('starting DesktopComponent::load(menuData)');
+        console.log('menuData>>');
+        console.log(menuData);
         const d = menuData.d;
         const htmlString = this.getPage(d);
         $('#main-content').html(htmlString);
+
+        this.messages.isReady();
+
+        // let msgElement = document.getElementsByClassName('messages-item');
+        // for (let i = 0; i < msgElement.length; i++) {
+        //     ((index) => {
+        //         msgElement[index].addEventListener('click', function () {
+        //             console.log('Clicked index: ' + index);
+        //             let id = msgElement[index].getAttribute('id');
+        //             console.log('id=' + id);
+        //             $('.messages-item, active').removeClass('active');
+        //             $('#' + id).addClass('active');
+        //             // menuData.state.find(s => s.id === id);
+        //         });
+        //     })(i);
+        // }
+
+
+        // $(document).ready(() => {
+        //     $('body').find('.messages-item').click(() => {
+        //         console.log('message-item is clicked');
+        //         const html = $(this).attr('id');
+        //         console.log('html=' + html);
+        //     });
+        // });
+
     }
 
 
