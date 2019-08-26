@@ -6,6 +6,7 @@ import { CalendarComponent } from 'src/app/skin01/views/calendar/calendar.compon
 import { ChartComponent } from 'src/app/skin01/views/chart/chart.component';
 import { MessagesComponent } from 'src/app/skin01/views/messages/messages.component';
 import { Dashboard1Component } from 'src/app/skin01/views/dashboard1/dashboard1.component';
+import { MessagesService } from '../../views/messages/messages.service';
 
 @Component({
     selector: 'app-desktop',
@@ -19,6 +20,7 @@ export class DesktopComponent implements OnInit {
     messages;
     dashboard;
     constructor(
+        private svMesseges: MessagesService
     ) {
         this.userprofile = new UserProfileComponent();
         this.calendar = new CalendarComponent();
@@ -38,30 +40,7 @@ export class DesktopComponent implements OnInit {
         const htmlString = this.getPage(d);
         $('#main-content').html(htmlString);
 
-        this.messages.isReady();
-
-        // let msgElement = document.getElementsByClassName('messages-item');
-        // for (let i = 0; i < msgElement.length; i++) {
-        //     ((index) => {
-        //         msgElement[index].addEventListener('click', function () {
-        //             console.log('Clicked index: ' + index);
-        //             let id = msgElement[index].getAttribute('id');
-        //             console.log('id=' + id);
-        //             $('.messages-item, active').removeClass('active');
-        //             $('#' + id).addClass('active');
-        //             // menuData.state.find(s => s.id === id);
-        //         });
-        //     })(i);
-        // }
-
-
-        // $(document).ready(() => {
-        //     $('body').find('.messages-item').click(() => {
-        //         console.log('message-item is clicked');
-        //         const html = $(this).attr('id');
-        //         console.log('html=' + html);
-        //     });
-        // });
+        this.svMesseges.isReady();
 
     }
 

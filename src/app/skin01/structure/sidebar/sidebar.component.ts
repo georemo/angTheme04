@@ -5,9 +5,12 @@ import { ServerService } from '../../../services/server.service';
 import { SessService } from '../../../services/sess.service';
 import { MenuService } from '../../../services/menu.service';
 import { UserService } from '../../../services/user.service';
+import { DesktopService } from '../../views/desktop/desktop.service';
+
+
 
 // import { MenuController } from './menucontroller';
-import { DesktopComponent } from '../../views/desktop/desktop.component';
+// import { DesktopComponent } from '../../views/desktop/desktop.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,6 +26,7 @@ export class SidebarComponent implements OnInit {
   userName;
   avatarLg;
   avatarSm;
+  token;
 
   //////////////////
   $body = $('body');
@@ -51,22 +55,23 @@ export class SidebarComponent implements OnInit {
     private svServer: ServerService,
     private svSess: SessService,
     private svMenu: MenuService,
-    private svUser: UserService
+    private svUser: UserService,
+    private svDesktop: DesktopService
   ) {
-    this.desktop = new DesktopComponent();
+    //this.desktop = new DesktopComponent();
     this.init();
-
   }
 
   init() {
-    this.list = this.svMenu.menuitems;
+    this.setMenuList(this.svMenu.menuData);
+    this.token = this.svSess.getCdToken();
     this.userData = this.svUser.userData;
     this.userName = this.userData[0]['fname'] + ' ' + this.userData[0]['lname'];
     this.setAvatar(this.userData[0]['avatar']);
     this.sidebarWidth = this.sideLeft.outerWidth(true);
   }
 
-  setList(menu) {
+  setMenuList(menu) {
     this.list = menu;
   }
 
@@ -103,7 +108,7 @@ export class SidebarComponent implements OnInit {
     menuData.d = d;
     console.log('desktopData>>');
     console.log(menuData);
-    this.desktop.load(menuData);
+    this.svDesktop.load(menuData);
   }
 
   // will need string manipulation as default, else use cd_obj_disp_name
@@ -142,9 +147,7 @@ export class SidebarComponent implements OnInit {
       console.log('menu cmd response');
       console.log(ret);
       return ret;
-
     }
-
     return ret;
   }
 
@@ -152,13 +155,10 @@ export class SidebarComponent implements OnInit {
   invoked everytime a menu item is clicked
   - menu data has menu_cmd field. 
   - menu_cmd contains the request command for setting up the data for menu item
+  - caching should be implemented to improve efficiency
   */
   async cmd(menuData) {
     const cmd = menuData['menu_cmd'];
-    console.log('menuData>>');
-    console.log(menuData);
-    console.log('menuCmd>>');
-    console.log(cmd);
     const jCmd = JSON.parse(cmd);
     const token = this.svSess.getCdToken();
     jCmd['dat']['token'] = token;
@@ -174,12 +174,13 @@ export class SidebarComponent implements OnInit {
         subTitle: this.setSubTitle(menuData),
         breadcrumb: this.setBreadcrumb(menuData),
         component: this.setComponent(menuData),
-        componentData: res
+        componentData: res,
+        token: this.token
       };
       menuData.d = d;
       console.log('desktopData>>');
       console.log(menuData);
-      this.desktop.load(menuData);
+      this.svDesktop.load(menuData);
     });
   }
 
@@ -556,6 +557,5 @@ export class SidebarComponent implements OnInit {
       runClosedBarButton();
     }); // end jq on ready()
   }
-
 }
 

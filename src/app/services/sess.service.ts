@@ -34,13 +34,11 @@ export class SessService {
   it needs to update the client session to extend the Expiration time
   */
   createSess(res) {
-    console.log('starting createSess(res)');
     this.setSess(res);
     this.svUser.getUserData(res);
   }
 
   setSess(res) {
-    console.log('starting setSess(res)');
     const sess = res.app_state.sess;
     const ttl = sess.ttl;
     this.maxDistance = Number(ttl) * 1000;

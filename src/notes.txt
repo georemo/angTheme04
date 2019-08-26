@@ -1,4 +1,67 @@
 
+To Do:
+1. make the memo page to be tabbed to allow inbox, compose, sent :DONE
+2. set template for compose & sent pages :DONE
+3. set default items for inbox/msg area before any message is loaded
+4. send memo
+request json sample:
+{
+    "ctx": "Sys",
+    "m": "Comm",
+    "c": "MemoController",
+    "a": "sendComm",
+    "dat": {
+        "fields": null,
+        "f_vals": [
+            {
+                "data": {
+                    "memo_message": "test msg",
+                    "memo_type_id": 4
+                },
+                "docproc": {
+                    "subject": "test subject"
+                },
+                "commconversationsub": [
+                    {
+                        "user_id": 1002,
+                        "sub_type_id": 1
+                    },
+                    {
+                        "user_id": 1007,
+                        "sub_type_id": 1
+                    }
+                ]
+            }
+        ],
+        "token": "yT0fPmjf3WijNrvIMpOarCBmP6za4nmflsfOQ6NX"
+    },
+    "args": null
+}
+5. Review loadDesktop() Strategy
+        - loadDesktop() depends on jquery replacement of desktop html 
+        - this means we cannot take full advantage of angular libraries working with angular templates
+        - consider if worthwhile to create a branch that has a different strategy
+    - Example of lost opportunity:
+        - Note: we are currently having issues with select2
+        - Angular module for multiselect is available that can be used to replace select2 
+    - Option 1: https://medium.com/@swarnakishore/angular-safe-pipe-implementation-to-bypass-domsanitizer-stripping-out-content-c1bf0f1cc36b
+        - this method implements a class that is used to allow a script or html text to be passed to a component html.
+        - any attempt to pass text or script to component is dissallowed by angular security.
+        - the above method would have been useful if it can work with component selector eg: dynamically loading <app-dashboard1></app-dashboard1>
+    - Option 2: https://angular.io/guide/dynamic-component-loader
+        - this uses directive and component factory which allows developer to dynamically insert compoinet html to another component
+        - the above strategy works only when the component is registered with the module file. Otherwise it is a worthwhile strategy.
+    - Option 3: https://blog.bitsrc.io/how-to-build-dynamic-components-in-angular-6-41f50abddc64
+        - source code: git clone https://github.com/rajatgeekyants/hero.git
+    - checkout https://bit.dev how is sharable components done?
+    - working plugin architecture examples: 
+        1. /Users/goremo/Documents/angular/plugins/stakoverflow discussion/dynamic-module-loading-master/
+        2. /Users/goremo/Documents/angular/plugins/stakoverflow discussion/angular-plugin-example-master/
+    - 
+
+5. implement cache for login() and getUserData()
+6. use websocket to push message to conversation subscribers
+7. set up custom cache with capacity to sync with original data
 
 Test Memo as working module:
 29th June 2019

@@ -49,6 +49,8 @@ import { UiNestableListComponent } from './skin01/views/sdk/ui-nestable-list/ui-
 import { UiTypographyComponent } from './skin01/views/sdk/ui-typography/ui-typography.component';
 import { Dashboard1Component } from './skin01/views/dashboard1/dashboard1.component';
 import { LoginComponent } from './skin01/views/login/login.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
+import { SafehtmlPipe } from './safehtml.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -95,7 +97,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     UiNestableListComponent,
     UiTypographyComponent,
     Dashboard1Component,
-    LoginComponent
+    LoginComponent,
+    SafeHtmlPipe,
+    SafehtmlPipe
   ],
   imports: [
     BrowserModule,

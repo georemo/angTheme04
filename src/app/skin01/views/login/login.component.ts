@@ -104,7 +104,6 @@ export class LoginComponent implements OnInit {
           });
           $('.box-login').show().addClass("animated bounceInRight").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $(this).show().removeClass("animated bounceInRight");
-
           });
         });
       };
@@ -268,7 +267,6 @@ export class LoginComponent implements OnInit {
 
   async login(data) {
     this.subLogin(data);
-    // this.obsvLogin(data);
   }
 
   async subLogin(data) {

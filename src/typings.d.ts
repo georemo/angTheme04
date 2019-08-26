@@ -32,6 +32,9 @@ interface JQuery<TElement> {
     resized2: any;
     validate: any;
     name: any;
+    summernote: any;
+    code: any;
+    select2: any;
 }
 
 
